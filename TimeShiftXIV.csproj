@@ -1,0 +1,21 @@
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Description>Convert a time into every timezone you care about and copy the result straight into chat.</Description>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Author>saijm</Author>
+    <Name>TimeShiftXIV</Name>
+    <Punchline>One time, every timezone, one click to chat.</Punchline>
+    <RepoUrl>https://github.com/saijm/TimeShiftXIV</RepoUrl>
+    <Tags>utility;ui</Tags>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The offline logic harness is a separate console project; keep it out of the plugin build. -->
+    <Compile Remove="tests\**" />
+  </ItemGroup>
+</Project>
