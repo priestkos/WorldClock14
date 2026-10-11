@@ -6,7 +6,7 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 /// <summary>
 /// The main window. Nothing in this class touches the game: no hooks, no native pointers, no game memory.
@@ -41,7 +41,7 @@ public sealed class TimeShiftWindow : Window, IDisposable
     private double flashUntil;
 
     public TimeShiftWindow(Configuration config, Action<string> requestCopy, Action openSettings)
-        : base("TimeShift###TimeShiftXIVMain")
+        : base("TimeShift###WorldClock14Main")
     {
         this.config = config;
         this.requestCopy = requestCopy;

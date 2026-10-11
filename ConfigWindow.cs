@@ -6,7 +6,7 @@ using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 /// <summary>Zone list, base zone and the shape of the copied line. Saves on every discrete edit and on close.</summary>
 public sealed class ConfigWindow : Window, IDisposable
@@ -26,7 +26,7 @@ public sealed class ConfigWindow : Window, IDisposable
     private string customId = "Asia/Tokyo";
 
     public ConfigWindow(Configuration config, Action<string>? requestCopy = null)
-        : base("TimeShift settings###TimeShiftXIVConfig")
+        : base("TimeShift settings###WorldClock14Config")
     {
         this.config = config;
         this.requestCopy = requestCopy;

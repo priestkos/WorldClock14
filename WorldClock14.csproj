@@ -9,9 +9,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <Author>saijm</Author>
-    <Name>TimeShiftXIV</Name>
+    <Name>WorldClock14</Name>
     <Punchline>One time, every timezone, one click to chat.</Punchline>
-    <RepoUrl>https://github.com/saijm/TimeShiftXIV</RepoUrl>
+    <RepoUrl>https://github.com/saijm/WorldClock14</RepoUrl>
     <Tags>utility;ui</Tags>
   </PropertyGroup>
   <ItemGroup>

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using TimeShiftXIV;
+using WorldClock14;
 
-namespace TimeShiftXIV.LogicTests;
+namespace WorldClock14.LogicTests;
 
 /// <summary>
-/// Runs TimeShiftXIV's real logic (TimeConversion.cs, compiled straight out of the plugin) with no game
+/// Runs WorldClock14's real logic (TimeConversion.cs, compiled straight out of the plugin) with no game
 /// running. Two jobs: a self-checking assertion suite, and --dump, which writes a grid another timezone
 /// implementation can be compared against.
 /// </summary>

@@ -6,11 +6,11 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 public sealed class Plugin : IDalamudPlugin
 {
-    public string Name => "TimeShiftXIV";
+    public string Name => "WorldClock14";
 
     [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
     [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
@@ -20,7 +20,7 @@ public sealed class Plugin : IDalamudPlugin
     private const string ConfigCommandName = "/tzconfig";
 
     private readonly Configuration configuration;
-    private readonly WindowSystem windowSystem = new("TimeShiftXIV");
+    private readonly WindowSystem windowSystem = new("WorldClock14");
     private readonly TimeShiftWindow mainWindow;
     private readonly ConfigWindow configWindow;
 
@@ -55,7 +55,7 @@ public sealed class Plugin : IDalamudPlugin
             HelpMessage = "TimeShift settings.",
         });
 
-        Log.Info("[TimeShiftXIV] loaded with " + configuration.Zones.Count + " zones, base " + configuration.BaseZone.DisplayLabel + ".");
+        Log.Info("[WorldClock14] loaded with " + configuration.Zones.Count + " zones, base " + configuration.BaseZone.DisplayLabel + ".");
     }
 
     public void Dispose()
@@ -86,7 +86,7 @@ public sealed class Plugin : IDalamudPlugin
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "[TimeShiftXIV] could not write to the clipboard.");
+            Log.Error(ex, "[WorldClock14] could not write to the clipboard.");
         }
     }
 
@@ -110,7 +110,7 @@ public sealed class Plugin : IDalamudPlugin
 
         if (lowered is "help" or "?" or "-h" or "--help")
         {
-            Log.Info("[TimeShiftXIV] /tz opens the window. /tz <time> converts and copies it. /tz now converts this instant. /tzconfig opens settings. Times: 20:00, 8pm, 8:30pm, 2000, 20, Wed 21:00, tomorrow 20:00, 2026-10-07 20:00.");
+            Log.Info("[WorldClock14] /tz opens the window. /tz <time> converts and copies it. /tz now converts this instant. /tzconfig opens settings. Times: 20:00, 8pm, 8:30pm, 2000, 20, Wed 21:00, tomorrow 20:00, 2026-10-07 20:00.");
             return;
         }
 
@@ -127,7 +127,7 @@ public sealed class Plugin : IDalamudPlugin
         if (!Converter.TryBuildRows(args, now, configuration.BaseZone, configuration.Zones,
                 out var parsedRows, out var parsed, out _, out var error))
         {
-            Log.Warning("[TimeShiftXIV] " + error + " (input: \"" + args + "\")");
+            Log.Warning("[WorldClock14] " + error + " (input: \"" + args + "\")");
             mainWindow.ShowError(error, args);
             return;
         }
@@ -140,12 +140,12 @@ public sealed class Plugin : IDalamudPlugin
         var text = ChatFormatter.Build(rows, configuration.Format);
         if (text.Length == 0)
         {
-            Log.Warning("[TimeShiftXIV] nothing to convert - every zone is disabled or has an unknown id.");
+            Log.Warning("[WorldClock14] nothing to convert - every zone is disabled or has an unknown id.");
             return;
         }
 
         if (configuration.CopyFromCommand) QueueCopy(text);
-        if (configuration.LogFromCommand) Log.Info("[TimeShiftXIV] " + description + " -> " + text);
+        if (configuration.LogFromCommand) Log.Info("[WorldClock14] " + description + " -> " + text);
     }
 
     private void QueueCopy(string text) => pendingCopy = text;

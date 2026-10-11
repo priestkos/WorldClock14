@@ -1,7 +1,7 @@
 using System;
 using Dalamud.Bindings.ImGui;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 /// <summary>Small pieces of UI both windows need. Kept here so the two never drift apart.</summary>
 internal static class UiHelpers

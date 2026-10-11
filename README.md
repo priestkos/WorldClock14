@@ -1,4 +1,4 @@
-# TimeShiftXIV
+# WorldClock14
 
 Convert a time into every timezone you care about, then paste it into chat.
 
@@ -83,8 +83,8 @@ Needs the .NET 10 SDK and the Dalamud dev distrib at
 `%AppData%\XIVLauncher\addon\Hooks\dev` (or `DALAMUD_HOME`).
 
 ```
-dotnet build -c Debug      # load bin/Debug/TimeShiftXIV.dll as a dev plugin
-dotnet build -c Release    # zip in bin/Release/TimeShiftXIV/latest.zip
+dotnet build -c Debug      # load bin/Debug/WorldClock14.dll as a dev plugin
+dotnet build -c Release    # zip in bin/Release/WorldClock14/latest.zip
 ```
 
 Dev plugin path: `/xlsettings` → Experimental → Dev Plugin Locations.

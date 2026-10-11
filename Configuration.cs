@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dalamud.Configuration;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 /// <summary>
 /// Everything is a preference: which zones the window shows, the zone the typed time is read in,

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 /// <summary>
 /// One entry in the user's zone list.
 /// Deliberately free of every Dalamud type so this whole file compiles into the offline test harness
-/// (tests/TimeShiftXIV.LogicTests) and runs with no game, no Dalamud and no dev distrib.
+/// (tests/WorldClock14.LogicTests) and runs with no game, no Dalamud and no dev distrib.
 /// </summary>
 public sealed class TimeZoneEntry
 {

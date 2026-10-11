@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TimeShiftXIV;
+namespace WorldClock14;
 
 /// <summary>
 /// The seeded zone list and the one-click presets. Pure data with no Dalamud types, so the offline

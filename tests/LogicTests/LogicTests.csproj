@@ -10,7 +10,7 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>LogicTests</AssemblyName>
-    <RootNamespace>TimeShiftXIV.LogicTests</RootNamespace>
+    <RootNamespace>WorldClock14.LogicTests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\TimeConversion.cs" />
