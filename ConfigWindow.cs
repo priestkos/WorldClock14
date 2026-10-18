@@ -81,6 +81,7 @@ public sealed class ConfigWindow : Window, IDisposable
     {
         if (index < 0 || index >= config.Zones.Count) return;
         var zone = config.Zones[index];
+        if (zone is null) return;
 
         ImGui.TableNextRow();
 
@@ -106,10 +107,15 @@ public sealed class ConfigWindow : Window, IDisposable
         {
             ImGui.SetNextItemWidth(-1);
             var minutes = zone.FixedOffsetMinutes;
-            if (ImGui.InputInt("##minutes", ref minutes, 15, 60)) zone.FixedOffsetMinutes = minutes;
-            if (ImGui.IsItemDeactivatedAfterEdit()) Save();
+            if (ImGui.InputInt("##minutes", ref minutes, 15, 60))
+                zone.FixedOffsetMinutes = ZoneResolver.ClampFixedOffset(minutes);
+            if (ImGui.IsItemDeactivatedAfterEdit())
+            {
+                zone.FixedOffsetMinutes = ZoneResolver.ClampFixedOffset(zone.FixedOffsetMinutes);
+                Save();
+            }
             if (ImGui.IsItemHovered())
-                ImGui.SetTooltip("Fixed offset from UTC in minutes (330 = +05:30). Fixed zones never shift for DST.");
+                ImGui.SetTooltip("Fixed offset from UTC in minutes (330 = +05:30). Clamped to ±14 hours. Fixed zones never shift for DST.");
         }
         else if (zone.IsLocal)
         {
@@ -204,7 +210,9 @@ public sealed class ConfigWindow : Window, IDisposable
             ImGui.TextUnformatted("Add a zone");
 
         ImGui.SetNextItemWidth(260 * ImGuiHelpers.GlobalScale);
-        var preview = customMode ? "Custom..." : $"{presets[presetIndex].Label}  ({presets[presetIndex].Id})";
+        var preview = customMode
+            ? "Custom..."
+            : $"{presets[presetIndex].Label}  ({presets[presetIndex].Describe()})";
         if (ImGui.BeginCombo("##tzpreset", preview))
         {
             for (var i = 0; i < presets.Count; i++)
