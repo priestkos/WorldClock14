@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WorldClock14 — Custom time</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+  <div class="win" id="shot">
+    <div class="titlebar">
+      <div class="title">TimeShift</div>
+      <div class="ghost">Settings</div>
+    </div>
+
+    <div class="modes">
+      <div class="mode">Live now</div>
+      <div class="mode on">Custom time</div>
+    </div>
+
+    <div class="field">Wed 21:00</div>
+
+    <div class="label">Times are read in</div>
+    <div class="select"><span>IST</span><span>▾</span></div>
+
+    <table>
+      <tr>
+        <td class="zone base">IST</td>
+        <td><span class="time">21:00</span></td>
+        <td style="width:62px"><span class="copy">Copy</span></td>
+      </tr>
+      <tr>
+        <td class="zone">JST</td>
+        <td><span class="time">00:30</span><span class="delta plus">+1d</span></td>
+        <td style="width:62px"><span class="copy">Copy</span></td>
+      </tr>
+      <tr>
+        <td class="zone">UTC</td>
+        <td><span class="time">15:30</span></td>
+        <td style="width:62px"><span class="copy">Copy</span></td>
+      </tr>
+      <tr>
+        <td class="zone">ET</td>
+        <td><span class="time">11:30</span></td>
+        <td style="width:62px"><span class="copy">Copy</span></td>
+      </tr>
+    </table>
+
+    <button class="primary">Copy for chat</button>
+    <div class="flash">Copied: 21:00 IST | 00:30 JST Thu +1d | 15:30 UTC | 11:30 ET</div>
+    <div class="echo">Wed 07 10 2026 21:00</div>
+  </div>
+</body>
+</html>
