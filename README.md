@@ -2,6 +2,20 @@
 
 Convert a time into every timezone you care about, then paste it into chat.
 
+## Screenshots
+
+Simulated window mockups (same layout and colours as the ImGui UI; times are fixed
+examples so the day-rollover marker is visible).
+
+| Live now | Custom time (day rollover) |
+|---|---|
+| ![Live now](screenshots/live-now.png) | ![Custom time](screenshots/custom-time.png) |
+
+![Settings](screenshots/settings.png)
+
+Regenerate from the HTML sources with `node scripts/capture-screenshots.mjs`
+(needs Chrome/Chromium and Pillow).
+
 ## The problem
 
 "Raid at 20:00" is useless to a party spread across IST, JST, UTC and ET — and the
@@ -51,6 +65,7 @@ zone in the list.
 | `ConfigWindow.cs` | settings |
 | `UiHelpers.cs` | shared widgets |
 | `preview.html` | window mockup, live via `Intl` |
+| `screenshots/` | static mockup HTML + PNGs for the README |
 
 ## Offline tests
 
