@@ -29,13 +29,14 @@ internal static class UiHelpers
         for (var i = 0; i < config.Zones.Count; i++)
         {
             var zone = config.Zones[i];
-            var selected = !config.BaseZone.IsLocal && !config.BaseZone.IsFixed && !zone.IsFixed &&
-                           string.Equals(config.BaseZone.Id, zone.Id, StringComparison.OrdinalIgnoreCase);
+            var selected = IsSameBaseChoice(config.BaseZone, zone);
 
             if (ImGui.Selectable($"{zone.DisplayLabel}##{id}_zone{i}", selected))
             {
                 var copy = zone.Clone();
                 copy.IsLocal = false;
+                if (copy.IsFixed)
+                    copy.FixedOffsetMinutes = ZoneResolver.ClampFixedOffset(copy.FixedOffsetMinutes);
                 config.BaseZone = copy;
                 changed = true;
             }
@@ -45,5 +46,17 @@ internal static class UiHelpers
 
         if (changed) config.Save();
         return changed;
+    }
+
+    /// <summary>Whether a list entry is the one currently chosen as base (local / fixed offset / id).</summary>
+    private static bool IsSameBaseChoice(TimeZoneEntry baseZone, TimeZoneEntry zone)
+    {
+        if (baseZone.IsLocal) return zone.IsLocal;
+        if (baseZone.IsFixed)
+            return zone.IsFixed &&
+                   ZoneResolver.ClampFixedOffset(baseZone.FixedOffsetMinutes) ==
+                   ZoneResolver.ClampFixedOffset(zone.FixedOffsetMinutes);
+        return !zone.IsLocal && !zone.IsFixed &&
+               string.Equals(baseZone.Id, zone.Id, StringComparison.OrdinalIgnoreCase);
     }
 }

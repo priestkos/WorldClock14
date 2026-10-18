@@ -51,8 +51,9 @@ public sealed class TimeZoneEntry
         if (IsLocal) return "system local";
         if (IsFixed)
         {
-            var sign = FixedOffsetMinutes < 0 ? "-" : "+";
-            return sign + TimeSpan.FromMinutes(Math.Abs(FixedOffsetMinutes)).ToString(@"hh\:mm") + " fixed";
+            var minutes = ZoneResolver.ClampFixedOffset(FixedOffsetMinutes);
+            var sign = minutes < 0 ? "-" : "+";
+            return sign + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm") + " fixed";
         }
         return Id;
     }
@@ -78,13 +79,19 @@ public static class ZoneResolver
     /// <summary>Never-null resolution for the base zone: a broken base id falls back to system local.</summary>
     public static TimeZoneInfo ResolveBaseOrLocal(TimeZoneEntry? entry) => Resolve(entry) ?? TimeZoneInfo.Local;
 
+    public const int MinFixedOffsetMinutes = -14 * 60;
+    public const int MaxFixedOffsetMinutes = 14 * 60;
+
+    public static int ClampFixedOffset(int minutes) =>
+        Math.Clamp(minutes, MinFixedOffsetMinutes, MaxFixedOffsetMinutes);
+
     public static TimeZoneInfo FixedOffset(int minutes)
     {
-        minutes = Math.Clamp(minutes, -14 * 60, 14 * 60);
+        minutes = ClampFixedOffset(minutes);
         if (FixedCache.TryGetValue(minutes, out var cached)) return cached;
 
         var sign = minutes < 0 ? "-" : "+";
-        var id = "TimeShiftXIV/Fixed" + sign + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm");
+        var id = "WorldClock14/Fixed" + sign + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm");
         var zone = TimeZoneInfo.CreateCustomTimeZone(id, TimeSpan.FromMinutes(minutes), id, id);
         FixedCache[minutes] = zone;
         return zone;
@@ -241,7 +248,7 @@ public static class TimeInput
         {
             WallClock = wallClock,
             HadDate = hadDate,
-            Echo = wallClock.ToString("ddd dd MMM yyyy HH:mm", CultureInfo.InvariantCulture),
+            Echo = TimeFmt.Echo(wallClock, use24Hour: true),
         };
         return true;
     }
@@ -325,7 +332,8 @@ public static class TimeInput
         if (!Weekdays.TryGetValue(token, out var target)) return false;
 
         var ahead = ((int)target - (int)today.DayOfWeek + 7) % 7;
-        if (nextWeek && ahead == 0) ahead = 7;
+        // "next" always means the occurrence after this week's, including when that weekday is still ahead.
+        if (nextWeek) ahead += 7;
         date = today.Date.AddDays(ahead);
         return true;
     }
@@ -372,6 +380,20 @@ public static class TimeInput
             {
                 return false;
             }
+
+            // Bare month-day with no year: if that date already passed this year, take next year.
+            if (date < today.Date)
+            {
+                try
+                {
+                    date = date.AddYears(1);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -385,6 +407,13 @@ public static class TimeFmt
         use24Hour
             ? local.ToString("HH:mm", CultureInfo.InvariantCulture)
             : local.ToString("h:mm tt", CultureInfo.InvariantCulture);
+
+    /// <summary>Echo of a parsed naive wall clock, respecting the user's 12/24-hour preference.</summary>
+    public static string Echo(DateTime wallClock, bool use24Hour) =>
+        wallClock.ToString("ddd dd MMM yyyy", CultureInfo.InvariantCulture) + " " +
+        (use24Hour
+            ? wallClock.ToString("HH:mm", CultureInfo.InvariantCulture)
+            : wallClock.ToString("h:mm tt", CultureInfo.InvariantCulture));
 
     /// <summary>Midnight-exact times read better with the date attached, so the UI uses this for the header.</summary>
     public static string Full(DateTimeOffset local, bool use24Hour) =>
@@ -491,7 +520,7 @@ public static class Converter
 
         foreach (var entry in zones)
         {
-            if (!entry.Enabled) continue;
+            if (entry is null || !entry.Enabled) continue;
 
             var zone = ZoneResolver.Resolve(entry);
             if (zone is null)
@@ -535,8 +564,14 @@ public static class Converter
         return true;
     }
 
+    /// <summary>
+    /// True when two zones are the same database entry or carry identical rules — so system local
+    /// matches its IANA equivalent even when the Ids differ (Windows id vs IANA id).
+    /// </summary>
     public static bool SameZone(TimeZoneInfo a, TimeZoneInfo b) =>
-        string.Equals(a.Id, b.Id, StringComparison.OrdinalIgnoreCase);
+        ReferenceEquals(a, b) ||
+        string.Equals(a.Id, b.Id, StringComparison.OrdinalIgnoreCase) ||
+        a.HasSameRules(b);
 }
 
 public static class ChatFormatter

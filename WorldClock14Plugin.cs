@@ -52,7 +52,7 @@ public sealed class Plugin : IDalamudPlugin
 
         CommandManager.AddHandler(ConfigCommandName, new CommandInfo((_, _) => ToggleConfig())
         {
-            HelpMessage = "TimeShift settings.",
+            HelpMessage = "WorldClock14 settings.",
         });
 
         Log.Info("[WorldClock14] loaded with " + configuration.Zones.Count + " zones, base " + configuration.BaseZone.DisplayLabel + ".");
@@ -125,14 +125,17 @@ public sealed class Plugin : IDalamudPlugin
         }
 
         if (!Converter.TryBuildRows(args, now, configuration.BaseZone, configuration.Zones,
-                out var parsedRows, out var parsed, out _, out var error))
+                out var parsedRows, out var parsed, out var ambiguous, out var error))
         {
             Log.Warning("[WorldClock14] " + error + " (input: \"" + args + "\")");
             mainWindow.ShowError(error, args);
             return;
         }
 
-        Deliver(parsedRows, parsed.Echo);
+        if (ambiguous)
+            Log.Warning("[WorldClock14] Careful: the clocks change around that time in the base zone (input: \"" + args + "\").");
+
+        Deliver(parsedRows, TimeFmt.Echo(parsed.WallClock, configuration.Format.Use24Hour));
     }
 
     private void Deliver(System.Collections.Generic.List<ConversionRow> rows, string description)
