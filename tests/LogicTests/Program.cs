@@ -67,6 +67,10 @@ internal static class Program
 
         Check("IANA id resolves", ZoneResolver.ResolveId("Asia/Tokyo")?.Id, "Asia/Tokyo");
         Assert("Windows id resolves too", ZoneResolver.ResolveId("Tokyo Standard Time") is not null);
+        var tokyoIana = ZoneResolver.ResolveId("Asia/Tokyo");
+        var tokyoWindows = ZoneResolver.ResolveId("Tokyo Standard Time");
+        Assert("SameZone matches IANA and Windows ids for Tokyo",
+            tokyoIana is not null && tokyoWindows is not null && Converter.SameZone(tokyoIana, tokyoWindows));
         Assert("unknown id is null, not an exception", ZoneResolver.ResolveId("Mars/Olympus_Mons") is null);
         Assert("empty id is null", ZoneResolver.ResolveId("") is null);
         Assert("null id is null", ZoneResolver.ResolveId(null) is null);
@@ -105,11 +109,16 @@ internal static class Program
         Check("thursday 19:00", Wall("thursday 19:00", today), "2026-10-08 19:00");
         Check("mon 09:00", Wall("mon 09:00", today), "2026-10-12 09:00");
         Check("next wed rolls a full week", Wall("next wed 21:00", today), "2026-10-14 21:00");
-        Check("next mon", Wall("next mon 09:00", today), "2026-10-12 09:00");
+        Check("next mon skips this week's Monday", Wall("next mon 09:00", today), "2026-10-19 09:00");
+        Check("01-05 after October rolls to next year", Wall("01-05 20:00", today), "2027-01-05 20:00");
 
         Assert("parsed Echo is populated", TimeInput.TryParse("20:00", today, out var p, out _) && p.Echo.Length > 0);
+        Check("echo respects 12-hour", TimeFmt.Echo(new DateTime(2026, 10, 7, 20, 0, 0), use24Hour: false), "Wed 07 Oct 2026 8:00 PM");
         Assert("HadDate is false for a bare time", TimeInput.TryParse("20:00", today, out var p2, out _) && !p2.HadDate);
         Assert("HadDate is true for tomorrow", TimeInput.TryParse("tomorrow 20:00", today, out var p3, out _) && p3.HadDate);
+
+        Check("fixed Describe clamps to +14:00", TimeZoneEntry.Fixed("X", 99999).Describe(), "+14:00 fixed");
+        Check("fixed Describe clamps to -14:00", TimeZoneEntry.Fixed("Y", -99999).Describe(), "-14:00 fixed");
     }
 
     private static void ParseRejections(DateTime today)
@@ -225,6 +234,15 @@ internal static class Program
         Check("disabled zone is skipped", mixedRows.Count, 2);
         Assert("bad id becomes an error row", !mixedRows[0].Ok && mixedRows[0].Error.Contains("unknown zone", StringComparison.Ordinal));
         Assert("good zone still renders", mixedRows[1].Ok && mixedRows[1].Time(opts) == "07:00");
+
+        var withNull = new List<TimeZoneEntry?>
+        {
+            null,
+            TimeZoneEntry.Iana("ET", "America/New_York"),
+        };
+        var nullSafe = Converter.Convert(stamp, baseZone, withNull!);
+        Check("null zone entries are skipped", nullSafe.Count, 1);
+        Assert("row after null still renders", nullSafe[0].Ok && nullSafe[0].Time(opts) == "07:00");
     }
 
     private static void Formatting()

@@ -170,7 +170,7 @@ public sealed class TimeShiftWindow : Window, IDisposable
 
         note = ambiguous ? "Careful: the clocks change around that time in the base zone." : string.Empty;
         noteIsError = false;
-        echo = parsed.Echo;
+        echo = TimeFmt.Echo(parsed.WallClock, config.Format.Use24Hour);
         return rows;
     }
 

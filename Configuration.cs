@@ -35,18 +35,29 @@ public sealed class Configuration : IPluginConfiguration
     /// </summary>
     public void Normalize()
     {
-        if (Zones is null || Zones.Count == 0) Zones = Defaults.CreateZones();
+        if (Zones is null)
+        {
+            Zones = Defaults.CreateZones();
+        }
+        else
+        {
+            Zones.RemoveAll(static zone => zone is null);
+            if (Zones.Count == 0) Zones = Defaults.CreateZones();
+        }
 
         foreach (var zone in Zones)
         {
-            if (zone is null) continue;
             zone.Label ??= string.Empty;
             zone.Id ??= string.Empty;
+            if (zone.IsFixed)
+                zone.FixedOffsetMinutes = ZoneResolver.ClampFixedOffset(zone.FixedOffsetMinutes);
         }
 
         BaseZone ??= TimeZoneEntry.Local("Local");
         BaseZone.Label ??= string.Empty;
         BaseZone.Id ??= string.Empty;
+        if (BaseZone.IsFixed)
+            BaseZone.FixedOffsetMinutes = ZoneResolver.ClampFixedOffset(BaseZone.FixedOffsetMinutes);
 
         Format ??= new FormatOptions();
         Format.Separator ??= " | ";
