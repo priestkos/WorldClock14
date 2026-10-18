@@ -215,8 +215,12 @@ function render() {
       <td style="width:62px"><span class="copy">Copy</span></td>
     </tr>`).join('');
 
+  // Match TimeFmt.Full / Echo: "Wed 07 Oct 2026 20:00" (InvariantCulture MMM).
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const echo = `${base.weekday} ${base.day} ${months[+base.month - 1]} ${base.year} ${base.hour}:${base.minute}`;
+
   document.getElementById('flashText').textContent = line.join(' | ');
-  document.getElementById('echo').textContent = `${base.weekday} ${base.day} ${base.month} ${base.year} ${base.hour}:${base.minute}`;
+  document.getElementById('echo').textContent = echo;
 
   const p = partsFor('America/New_York', now);
   const off = offsetMinutes('America/New_York', now);
@@ -224,8 +228,7 @@ function render() {
   const abs = Math.abs(off);
   document.getElementById('etOffset').textContent = `${sign}${String(Math.floor(abs / 60)).padStart(2, '0')}:${String(abs % 60).padStart(2, '0')}`;
 
-  const head = `${base.weekday} ${base.day} ${base.month} ${base.year} 20:00  in Local`;
-  document.getElementById('previewHead').textContent = head;
+  document.getElementById('previewHead').textContent = `${base.weekday} ${base.day} ${months[+base.month - 1]} ${base.year} 20:00  in Local`;
   document.getElementById('preview').textContent = line.join(' | ');
 }
 
