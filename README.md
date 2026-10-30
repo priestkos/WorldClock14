@@ -15,19 +15,6 @@ Convert a time into every timezone you coordinate across, then paste one line in
   on any row. A zone whose date moved is marked: `22:00 ET Wed -1d` (`07 Oct -1d` when the date
   option is on).
 
-## Screenshots
-
-Simulated window mockups — same layout and colours as the ImGui UI, fixed times so the day-rollover
-marker shows.
-
-| Live now | Custom time (day rollover) |
-|---|---|
-| ![Live now](screenshots/live-now.png) | ![Custom time](screenshots/custom-time.png) |
-
-![Settings](screenshots/settings.png)
-
-Regenerate with `node scripts/capture-screenshots.mjs` (Chrome/Chromium + Pillow).
-
 ## How it works
 
 - **No hooks, no native pointers, no game memory.** It reads the clock and draws. Parsing, zone
@@ -103,7 +90,7 @@ python ../compare.py grid.net.tsv grid.icu.tsv
 - DST rules come from the host tz database; a fixed-offset zone never moves, by design.
 - A time typed without a date is read in the base zone's today.
 - The presets are a curated 25, not the full tz database; anything else is typed as an id.
-- The window's in-game appearance is not verified; the screenshots are simulated mockups.
+- Not verified in game: behaviour is taken from the code and the offline tests, not from a live client.
 
 ## Layout
 
@@ -115,5 +102,4 @@ TimeShiftWindow.cs  main window
 ConfigWindow.cs     settings
 UiHelpers.cs        shared widgets
 preview.html        window mockup, live via Intl
-screenshots/        static mockup HTML + PNGs for the README
 ```
