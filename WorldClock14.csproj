@@ -13,7 +13,7 @@
     <Name>WorldClock14</Name>
     <Punchline>One time, every timezone, one click to chat.</Punchline>
     <RepoUrl>https://github.com/priestkos/WorldClock14</RepoUrl>
-    <Tags>utility;ui</Tags>
+    <Tags>timezone;utility</Tags>
   </PropertyGroup>
   <ItemGroup>
     <!-- The offline logic harness is a separate console project; keep it out of the plugin build. -->
