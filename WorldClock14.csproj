@@ -8,7 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
-    <Author>saijm</Author>
+    <Author>PriestKos</Author>
+    <Authors>PriestKos</Authors>
     <Name>WorldClock14</Name>
     <Punchline>One time, every timezone, one click to chat.</Punchline>
     <RepoUrl>https://github.com/priestkos/WorldClock14</RepoUrl>
