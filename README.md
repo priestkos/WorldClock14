@@ -101,5 +101,4 @@ Configuration.cs    IPluginConfiguration, repair of a hand-edited config
 TimeShiftWindow.cs  main window
 ConfigWindow.cs     settings
 UiHelpers.cs        shared widgets
-preview.html        window mockup, live via Intl
 ```
