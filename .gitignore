@@ -12,3 +12,6 @@ concept.html
 IDEA.md
 /mockups/
 /docs/mockups/
+
+# the mockup checker tests the local-only preview.html
+tests/mockup-check.mjs
