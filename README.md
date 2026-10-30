@@ -1,11 +1,24 @@
 # WorldClock14
 
-Convert a time into every timezone you care about, then paste it into chat.
+Convert a time into every timezone you coordinate across, then paste one line into chat.
+
+`/tz` · Dalamud API 15 · .NET 10
+
+## What it does
+
+- **Live now** (default) — the current instant in every configured zone, ticking each frame.
+- **Custom time** — type a time and see it everywhere: `20:00`, `8pm`, `8:30pm`, `2000`, `930`,
+  `20`, `Wed 21:00`, `next mon 09:00`, `tomorrow 20:00`, `2026-10-07 20:00`, `2026-10-07T20:00`,
+  `10/07 20:00`. Bare dates (`10-07`) roll to next year once past; `today`, `tonight`, `tomorrow`
+  (`tmrw`, `tmw`), `yesterday` and a filler `at` also parse.
+- **Copy for chat** — one line, `16:30 IST | 20:00 JST | 11:00 UTC | 07:00 ET`, or a per-zone Copy
+  on any row. A zone whose date moved is marked: `22:00 ET Wed -1d` (`07 Oct -1d` when the date
+  option is on).
 
 ## Screenshots
 
-Simulated window mockups (same layout and colours as the ImGui UI; times are fixed
-examples so the day-rollover marker is visible).
+Simulated window mockups — same layout and colours as the ImGui UI, fixed times so the day-rollover
+marker shows.
 
 | Live now | Custom time (day rollover) |
 |---|---|
@@ -13,76 +26,69 @@ examples so the day-rollover marker is visible).
 
 ![Settings](screenshots/settings.png)
 
-Regenerate from the HTML sources with `node scripts/capture-screenshots.mjs`
-(needs Chrome/Chromium and Pillow).
+Regenerate with `node scripts/capture-screenshots.mjs` (Chrome/Chromium + Pillow).
 
-## The problem
+## How it works
 
-"Raid at 20:00" is useless to a party spread across IST, JST, UTC and ET — and the
-conversion that matters is not the hour, it is the **day**. A time that reads Thursday
-in Tokyo reads Wednesday in New York, and that is the mistake that loses people.
+- **No hooks, no native pointers, no game memory.** It reads the clock and draws. Parsing, zone
+  resolution, conversion and chat formatting all live in `TimeConversion.cs`, with zero Dalamud
+  types in it.
+- **DST is handled, not guessed.** A time that does not exist (the spring-forward gap) is refused
+  with an explanation; the repeated autumn hour is flagged.
+- **Bad zone ids cannot take the window down**: an unresolvable id becomes a row that says so, and
+  the base zone falls back to system local.
+- **Clipboard writes happen inside a draw frame**, queued from `/tz` and written from the Draw
+  handler — so `/tz` also works with the window shut.
 
-## What it does
+## Commands
 
-- **Live now** (default): the current instant in every zone you have configured, always ticking.
-- **Custom time**: type a time and see it everywhere.
-  `20:00` · `8pm` · `8:30pm` · `2000` · `930` · `20` · `Wed 21:00` · `next mon 09:00` ·
-  `tomorrow 20:00` · `2026-10-07 20:00` · `2026-10-07T20:00` · `10/07 20:00`
-- **Copy for chat**: one line, `16:30 IST | 20:00 JST | 11:00 UTC | 07:00 ET`, or a per-zone
-  Copy on any row. Rolled-over zones get a marker: `22:00 ET Wed -1d`.
-- `/tz <time>` converts and copies without opening the window; `/tz` opens it; `/tzconfig`
-  opens settings; `/tz now` converts this instant.
+| Command | Effect |
+| --- | --- |
+| `/tz` | open the window |
+| `/tz <time>` | convert, copy (and log) the line |
+| `/tz now` | convert this instant |
+| `/tz config`, `cfg`, `settings`, `/tzconfig` | settings window |
+| `/tz help`, `?`, `-h`, `--help` | print the accepted forms to `/xllog` |
 
-## Zones
+## Settings
 
-Defaults are IST, JST, UTC and ET. The list is yours: add from 25 presets, type any IANA
-(`Asia/Tokyo`) or Windows (`Tokyo Standard Time`) id, or pin a raw offset as minutes
-(`330` = `+05:30`) that never shifts for DST. Reorder, disable, rename.
+- **Zones** — the list the window and the copied line use, in order: add from 25 presets, type any
+  IANA (`Asia/Tokyo`) or Windows (`Tokyo Standard Time`) id, or pin an offset in minutes
+  (`330` = `+05:30`) that never shifts for DST. Reorder, disable, rename.
+- **Base zone** — what a typed time is *read as*; system local by default, any zone in the list.
+- **Format** — 24-hour, weekday (or date) on a day change, one zone per line, separator (default
+  ` | `), prefix, suffix.
+- **Command behaviour** — copy the line and print it to `/xllog` on `/tz <time>` (both on).
 
-The base zone — what a typed time is *read as* — defaults to system local and can be any
-zone in the list.
+## Build
 
-## Design notes
+Requires the .NET 10 SDK and the Dalamud dev distribution
+(`%APPDATA%\XIVLauncher\addon\Hooks\dev`, or `DALAMUD_HOME`).
 
-- **No hooks, no native pointers, no game memory.** The plugin reads the clock and draws.
-  All conversion logic lives in `TimeConversion.cs` with zero Dalamud types in it.
-- **DST is handled, not guessed.** A time that does not exist (the spring-forward gap) is
-  refused with an explanation instead of silently resolving to the wrong instant; the
-  repeated hour in autumn is flagged.
-- **Bad zone ids cannot take the window down**: an unresolvable id becomes a row that says
-  so, and the base zone falls back to system local.
-- **Clipboard writes happen inside a draw frame**, queued from `/tz` rather than written
-  from the command callback.
+```
+dotnet build -c Debug      # load bin/Debug/WorldClock14.dll as a dev plugin
+dotnet build -c Release    # zip in bin/Release/WorldClock14/latest.zip
+```
 
-## Layout
+## Install (dev plugin)
 
-| File | |
-|---|---|
-| `TimeConversion.cs` | all logic — parsing, zone resolution, conversion, chat formatting (no Dalamud) |
-| `Defaults.cs` | seeded zones and presets (no Dalamud) |
-| `Configuration.cs` | `IPluginConfiguration`, normalization of a hand-edited config |
-| `TimeShiftWindow.cs` | main window |
-| `ConfigWindow.cs` | settings |
-| `UiHelpers.cs` | shared widgets |
-| `preview.html` | window mockup, live via `Intl` |
-| `screenshots/` | static mockup HTML + PNGs for the README |
+1. `/xlsettings` → Experimental → Dev Plugin Locations → add `bin\Debug\WorldClock14.dll`.
+2. `/xlplugins` → Dev Tools → enable **WorldClock14**.
+3. `/tz` opens the window; `/tzconfig` opens settings.
 
-## Offline tests
+## Tests
 
 `tests/LogicTests` compiles `TimeConversion.cs` and `Defaults.cs` **from the plugin**
 (`<Compile Include>`, no copies) and runs with no Dalamud, no dev distrib and no game:
 
 ```
 cd tests/LogicTests && dotnet run -c Release
-# 148,970 checks, 0 failures
+# 148977 checks, 0 failures
 ```
 
-That includes a round-trip over 148,860 wall clocks (2024–2027, 17 zones): naive time →
-instant → back to the same wall clock, with DST-gap and ambiguous hours skipped by design.
-
-### Reference comparison
-
-ICUs on two different sides, compared row by row — 2024-01-01 → 2027-01-01, hourly, 18 zones:
+That includes a round trip over 148,860 wall clocks (2024–2027, 17 zones): naive time → instant →
+back to the same wall clock, with 30 DST-gap and 30 ambiguous hours skipped by design. A reference
+harness then compares .NET against ICU, 2024-01-01 → 2027-01-01, hourly, 18 zones:
 
 ```
 cd tests/LogicTests && dotnet run -c Release -- --dump grid.net.tsv
@@ -92,14 +98,22 @@ python ../compare.py grid.net.tsv grid.icu.tsv
 
 473,472 rows compared, 0 mismatches, byte-identical output.
 
-## Build
+## Limits
 
-Needs the .NET 10 SDK and the Dalamud dev distrib at
-`%AppData%\XIVLauncher\addon\Hooks\dev` (or `DALAMUD_HOME`).
+- DST rules come from the host tz database; a fixed-offset zone never moves, by design.
+- A time typed without a date is read in the base zone's today.
+- The presets are a curated 25, not the full tz database; anything else is typed as an id.
+- The window's in-game appearance is not verified; the screenshots are simulated mockups.
+
+## Layout
 
 ```
-dotnet build -c Debug      # load bin/Debug/WorldClock14.dll as a dev plugin
-dotnet build -c Release    # zip in bin/Release/WorldClock14/latest.zip
+TimeConversion.cs   all logic - parsing, zone resolution, conversion, chat formatting (no Dalamud)
+Defaults.cs         seeded zones and the 25 presets (no Dalamud)
+Configuration.cs    IPluginConfiguration, repair of a hand-edited config
+TimeShiftWindow.cs  main window
+ConfigWindow.cs     settings
+UiHelpers.cs        shared widgets
+preview.html        window mockup, live via Intl
+screenshots/        static mockup HTML + PNGs for the README
 ```
-
-Dev plugin path: `/xlsettings` → Experimental → Dev Plugin Locations.
