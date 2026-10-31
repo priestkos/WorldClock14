@@ -1,0 +1,131 @@
+@import url("../../screenshots/src/_shared.css");
+
+html, body {
+  margin: 0;
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  background: #080a0f;
+}
+
+#stage {
+  width: 1280px;
+  height: 720px;
+  position: relative;
+}
+
+#caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 14px 24px 18px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #eef1f7;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+  min-height: 56px;
+  box-sizing: border-box;
+}
+
+#caption .sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--dim);
+}
+
+.scene-panel {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(165deg, #1a2638 0%, #0b3d4a 35%, #062018 70%, #0a0a12 100%);
+}
+
+.scene-panel.active {
+  display: flex;
+}
+
+.scene-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 420px 280px at 18% 78%, rgba(80, 140, 90, 0.25), transparent),
+    radial-gradient(ellipse 500px 320px at 82% 22%, rgba(60, 100, 160, 0.2), transparent);
+  pointer-events: none;
+}
+
+.scene-panel .panel-inner {
+  position: relative;
+  z-index: 1;
+}
+
+#scene-disclaimer {
+  background: linear-gradient(165deg, #1a2638 0%, #0b3d4a 35%, #062018 70%, #0a0a12 100%);
+  flex-direction: column;
+  text-align: center;
+  gap: 12px;
+}
+
+.disclaimer-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+  color: #eef1f7;
+}
+
+.disclaimer-body {
+  font-size: 22px;
+  margin: 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.disclaimer-note {
+  font-size: 20px;
+  margin: 16px 0 0;
+  padding: 10px 22px;
+  border: 1px solid rgba(242, 112, 112, 0.45);
+  border-radius: 8px;
+  color: #ffc8c8;
+  background: rgba(242, 112, 112, 0.12);
+}
+
+#scene-5 .scene-ui {
+  position: relative;
+  padding: 0;
+}
+
+.mode.clickable {
+  cursor: pointer;
+}
+
+.mode.clickable:hover {
+  filter: brightness(1.08);
+}
+
+#scene-4 .panel-inner {
+  transform: scale(0.58);
+  transform-origin: center center;
+}
+
+#scene-4 .settings-scroll {
+  transition: transform 0.6s ease;
+}
+
+.flash.hidden,
+.echo.hidden {
+  display: none;
+}
+
+.flash.visible,
+.echo.visible {
+  display: block;
+}

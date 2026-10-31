@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>04 — Settings</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body class="standalone">
+  <div class="win settings" id="shot">
+    <div class="titlebar">
+      <div class="title">TimeShift settings</div>
+    </div>
+
+    <h2>Zones</h2>
+    <p class="hint">Order is the order they appear in the copied line.</p>
+    <table class="data">
+      <tr>
+        <td style="width:26px"><span class="cb">✓</span></td>
+        <td class="zone" style="width:78px">IST</td>
+        <td class="zid">Asia/Kolkata</td>
+        <td class="zoff">+05:30</td>
+        <td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td>
+      </tr>
+      <tr class="row-disabled">
+        <td><span class="cb off"></span></td>
+        <td>JST</td>
+        <td class="zid">Asia/Tokyo</td>
+        <td class="zoff">+09:00</td>
+        <td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td>
+      </tr>
+      <tr>
+        <td><span class="cb">✓</span></td>
+        <td>UTC</td>
+        <td class="zid">0</td>
+        <td class="zoff">+00:00</td>
+        <td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td>
+      </tr>
+      <tr>
+        <td><span class="cb">✓</span></td>
+        <td>ET</td>
+        <td class="zid">America/New_York</td>
+        <td class="zoff">-04:00</td>
+        <td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td>
+      </tr>
+      <tr>
+        <td><span class="cb">✓</span></td>
+        <td>TST</td>
+        <td class="zid">Not/A/Real/Zone <span style="color:var(--danger)">unknown zone</span></td>
+        <td class="zoff">--</td>
+        <td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td>
+      </tr>
+    </table>
+
+    <h2>Add a zone</h2>
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px">
+      <div class="select" style="flex:1; margin:0"><span>PT&nbsp;&nbsp;(America/Los_Angeles)</span><span>▾</span></div>
+      <div class="ghost" style="color:var(--accent)">Add</div>
+    </div>
+    <p class="hint">Or choose <b>Custom...</b> in the same list:</p>
+    <div class="fmt-row">
+      <div class="fmt-field">Label&nbsp;<span>Example</span></div>
+      <div class="fmt-field" style="flex:1">Zone id&nbsp;<span>Not/A/Real/Zone</span></div>
+    </div>
+    <div class="hint" style="color:var(--danger)">"Not/A/Real/Zone" is not a zone id this machine knows.</div>
+
+    <h2>Base zone</h2>
+    <p class="hint">A time you type is read as being in this zone.</p>
+    <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+
+    <h2>Copied line</h2>
+    <div class="check"><b>✓</b> 24-hour times</div>
+    <div class="check"><b>✓</b> Add the weekday when a zone lands on another day</div>
+    <div class="check"><b>□</b> Add the date instead of the weekday</div>
+    <div class="check"><b>□</b> One zone per line</div>
+    <div class="fmt-row">
+      <div class="fmt-field">Separator&nbsp;<span>|</span></div>
+      <div class="fmt-field">Prefix&nbsp;<span></span></div>
+      <div class="fmt-field">Suffix&nbsp;<span></span></div>
+    </div>
+
+    <h2>Preview</h2>
+    <div class="hint">Wed 07 Oct 2026 20:00  in IST</div>
+    <div class="preview">20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
+    <div class="ghost" style="color:var(--accent); display:inline-block; margin-top:6px">Copy preview</div>
+
+    <div class="foot">
+      <div class="ghost">Reset to defaults</div>
+      <span>Saved automatically. Base: Asia/Kolkata</span>
+    </div>
+  </div>
+</body>
+</html>

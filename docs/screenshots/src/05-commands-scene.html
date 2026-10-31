@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>05 — Slash commands</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+  <div class="scene" id="shot">
+    <div class="scene-ui">
+      <div class="win">
+        <div class="titlebar">
+          <div class="title">TimeShift</div>
+          <div class="ghost">Settings</div>
+        </div>
+        <div class="modes">
+          <div class="mode on">Live now</div>
+          <div class="mode">Custom time</div>
+        </div>
+        <div class="label">Times are read in</div>
+        <div class="select"><span>Local</span><span>▾</span></div>
+        <p class="hint" style="margin-top:10px">Opened with bare <code>/tz</code> or Dalamud plugin UI.</p>
+      </div>
+
+      <div class="win log">
+        <div class="titlebar">
+          <div class="title">/xllog</div>
+        </div>
+        <div class="log-body">
+          <span class="tag">[WorldClock14]</span> /tz opens the window. /tz &lt;time&gt; converts and copies it. /tz now converts this instant. /tzconfig opens settings. Times: 20:00, 8pm, 8:30pm, 2000, 20, Wed 21:00, tomorrow 20:00, 2026-10-07 20:00.<br><br>
+          <span class="tag">[WorldClock14]</span> I don't understand "not a time" (input: "not a time")<br>
+          <span class="tag">[WorldClock14]</span> 02:30 on 09 Mar doesn't exist in America/New_York - the clocks jump forward that day. (input: "02:30")<br>
+          <span class="tag">[WorldClock14]</span> Careful: the clocks change around that time in the base zone (input: "1:30am").
+        </div>
+        <ul class="cmd-list">
+          <li><code>/tz</code> — open TimeShift</li>
+          <li><code>/tz 20:00</code> — convert and copy (when CopyFromCommand is on)</li>
+          <li><code>/tz now</code> — convert this instant</li>
+          <li><code>/tz config</code> — open settings</li>
+          <li><code>/tzconfig</code> — open settings</li>
+          <li><code>/tz help</code> — print help to log</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

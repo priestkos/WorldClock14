@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TimeShift mock-up walkthrough</title>
+<link rel="stylesheet" href="walkthrough.css">
+</head>
+<body>
+  <div id="stage">
+    <div id="caption"><span id="caption-main"></span><span class="sub" id="caption-sub"></span></div>
+
+    <div class="scene-panel active" id="scene-disclaimer">
+      <p class="disclaimer-title">TimeShift</p>
+      <p class="disclaimer-body">UI mock-up walkthrough</p>
+      <p class="disclaimer-note">Not an in-game capture — HTML mock-ups only</p>
+    </div>
+
+    <div class="scene-panel" id="scene-1">
+      <div class="panel-inner">
+        <div class="win" id="live-win">
+          <div class="titlebar">
+            <div class="title">TimeShift</div>
+            <div class="ghost">Settings</div>
+          </div>
+          <div class="modes">
+            <div class="mode on clickable" data-mode="live">Live now</div>
+            <div class="mode clickable" data-mode="custom">Custom time</div>
+          </div>
+          <div class="label">Times are read in</div>
+          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+          <table class="data" id="live-table">
+            <tr><td class="zone base">IST</td><td><span class="time" data-zone="ist">20:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">JST</td><td><span class="time" data-zone="jst">23:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">UTC</td><td><span class="time" data-zone="utc">14:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">ET</td><td><span class="time" data-zone="et">10:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          </table>
+          <button type="button" class="primary" id="live-copy-btn">Copy for chat</button>
+          <div class="flash hidden" id="live-flash">Copied: 20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
+          <div class="echo visible" id="live-echo">Wed 07 Oct 2026 20:00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-panel" id="scene-2">
+      <div class="panel-inner">
+        <div class="win">
+          <div class="titlebar">
+            <div class="title">TimeShift</div>
+            <div class="ghost">Settings</div>
+          </div>
+          <div class="modes">
+            <div class="mode">Live now</div>
+            <div class="mode on">Custom time</div>
+          </div>
+          <div class="field" id="custom-field">Wed 21:00</div>
+          <div class="label">Times are read in</div>
+          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+          <table class="data">
+            <tr><td class="zone base">IST</td><td><span class="time">21:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">JST</td><td><span class="time">00:30</span><span class="delta plus">+1d</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">UTC</td><td><span class="time">15:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">ET</td><td><span class="time">11:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          </table>
+          <button type="button" class="primary">Copy for chat</button>
+          <div class="note warn">Careful: the clocks change around that time in the base zone.</div>
+          <div class="flash">Copied: 21:00 IST | 00:30 JST Thu +1d | 15:30 UTC | 11:30 ET</div>
+          <div class="echo">Wed 07 Oct 2026 21:00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-panel" id="scene-3">
+      <div class="panel-inner">
+        <div class="win">
+          <div class="titlebar">
+            <div class="title">TimeShift</div>
+            <div class="ghost">Settings</div>
+          </div>
+          <div class="modes">
+            <div class="mode on">Live now</div>
+            <div class="mode">Custom time</div>
+          </div>
+          <div class="label">Times are read in</div>
+          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+          <table class="data">
+            <tr><td class="zone base">IST</td><td><span class="time">20:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+            <tr><td class="zone">BadZone</td><td><span class="errtext">unknown zone "Not/A/Real/Zone"</span></td><td style="width:62px"></td></tr>
+            <tr><td class="zone">UTC</td><td><span class="time">14:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          </table>
+          <button type="button" class="primary">Copy for chat</button>
+          <div class="echo">Wed 07 Oct 2026 20:00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-panel" id="scene-4">
+      <div class="panel-inner">
+        <div class="win settings settings-scroll" id="settings-win">
+          <div class="titlebar"><div class="title">TimeShift settings</div></div>
+          <h2>Zones</h2>
+          <p class="hint">Order is the order they appear in the copied line.</p>
+          <table class="data" id="settings-zones">
+            <tr data-row="ist"><td style="width:26px"><span class="cb">✓</span></td><td class="zone" style="width:78px">IST</td><td class="zid">Asia/Kolkata</td><td class="zoff">+05:30</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+            <tr class="row-disabled" data-row="jst"><td><span class="cb off"></span></td><td>JST</td><td class="zid">Asia/Tokyo</td><td class="zoff">+09:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+            <tr data-row="utc"><td><span class="cb">✓</span></td><td>UTC</td><td class="zid">0</td><td class="zoff">+00:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+            <tr data-row="et"><td><span class="cb">✓</span></td><td>ET</td><td class="zid">America/New_York</td><td class="zoff">-04:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+            <tr><td><span class="cb">✓</span></td><td>TST</td><td class="zid">Not/A/Real/Zone <span style="color:var(--danger)">unknown zone</span></td><td class="zoff">--</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+          </table>
+          <h2>Add a zone</h2>
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px">
+            <div class="select" style="flex:1; margin:0"><span>PT&nbsp;&nbsp;(America/Los_Angeles)</span><span>▾</span></div>
+            <div class="ghost" style="color:var(--accent)">Add</div>
+          </div>
+          <p class="hint">Or choose <b>Custom...</b> in the same list:</p>
+          <div class="fmt-row">
+            <div class="fmt-field">Label&nbsp;<span>Example</span></div>
+            <div class="fmt-field" style="flex:1">Zone id&nbsp;<span>Not/A/Real/Zone</span></div>
+          </div>
+          <div class="hint" style="color:var(--danger)">"Not/A/Real/Zone" is not a zone id this machine knows.</div>
+          <h2>Base zone</h2>
+          <p class="hint">A time you type is read as being in this zone.</p>
+          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+          <h2>Copied line</h2>
+          <div class="check"><b>✓</b> 24-hour times</div>
+          <div class="check" id="fmt-weekday"><b>✓</b> Add the weekday when a zone lands on another day</div>
+          <div class="check"><b>□</b> Add the date instead of the weekday</div>
+          <div class="check"><b>□</b> One zone per line</div>
+          <div class="fmt-row">
+            <div class="fmt-field">Separator&nbsp;<span>|</span></div>
+            <div class="fmt-field">Prefix&nbsp;<span></span></div>
+            <div class="fmt-field">Suffix&nbsp;<span></span></div>
+          </div>
+          <h2>Preview</h2>
+          <div class="hint">Wed 07 Oct 2026 20:00  in IST</div>
+          <div class="preview" id="settings-preview">20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
+          <div class="ghost" style="color:var(--accent); display:inline-block; margin-top:6px">Copy preview</div>
+          <div class="foot"><div class="ghost">Reset to defaults</div><span>Saved automatically. Base: Asia/Kolkata</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-panel" id="scene-5">
+      <div class="panel-inner scene-ui">
+        <div class="win">
+          <div class="titlebar"><div class="title">TimeShift</div><div class="ghost">Settings</div></div>
+          <div class="modes"><div class="mode on">Live now</div><div class="mode">Custom time</div></div>
+          <div class="label">Times are read in</div>
+          <div class="select"><span>Local</span><span>▾</span></div>
+          <p class="hint" style="margin-top:10px">Opened with bare <code>/tz</code> or Dalamud plugin UI.</p>
+        </div>
+        <div class="win log">
+          <div class="titlebar"><div class="title">/xllog</div></div>
+          <div class="log-body">
+            <span class="tag">[WorldClock14]</span> /tz opens the window. /tz &lt;time&gt; converts and copies it. /tz now converts this instant. /tzconfig opens settings. Times: 20:00, 8pm, 8:30pm, 2000, 20, Wed 21:00, tomorrow 20:00, 2026-10-07 20:00.<br><br>
+            <span class="tag">[WorldClock14]</span> I don't understand "not a time" (input: "not a time")<br>
+            <span class="tag">[WorldClock14]</span> 02:30 on 09 Mar doesn't exist in America/New_York - the clocks jump forward that day. (input: "02:30")<br>
+            <span class="tag">[WorldClock14]</span> Careful: the clocks change around that time in the base zone (input: "1:30am").
+          </div>
+          <ul class="cmd-list">
+            <li><code>/tz</code> — open TimeShift</li>
+            <li><code>/tz 20:00</code> — convert and copy (when CopyFromCommand is on)</li>
+            <li><code>/tz now</code> — convert this instant</li>
+            <li><code>/tz config</code> — open settings</li>
+            <li><code>/tzconfig</code> — open settings</li>
+            <li><code>/tz help</code> — print help to log</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /** Deterministic walkthrough timeline (fixed delays, no user input). */
+    const TIMES = {
+      ist: 20 * 60,
+      jst: 23 * 60 + 30,
+      utc: 14 * 60 + 30,
+      et: 10 * 60 + 30,
+    };
+
+    function fmtMins(m) {
+      m = ((m % (24 * 60)) + 24 * 60) % (24 * 60);
+      const h = Math.floor(m / 60);
+      const min = m % 60;
+      return String(h).padStart(2, "0") + ":" + String(min).padStart(2, "0");
+    }
+
+    function bumpLiveClock() {
+      TIMES.ist += 1;
+      TIMES.jst += 1;
+      TIMES.utc += 1;
+      TIMES.et += 1;
+      for (const [key, el] of Object.entries({
+        ist: document.querySelector('[data-zone="ist"]'),
+        jst: document.querySelector('[data-zone="jst"]'),
+        utc: document.querySelector('[data-zone="utc"]'),
+        et: document.querySelector('[data-zone="et"]'),
+      })) {
+        if (el) el.textContent = fmtMins(TIMES[key]);
+      }
+      const flash = document.getElementById("live-flash");
+      if (flash && flash.classList.contains("visible")) {
+        flash.textContent =
+          "Copied: " +
+          fmtMins(TIMES.ist) + " IST | " +
+          fmtMins(TIMES.jst) + " JST | " +
+          fmtMins(TIMES.utc) + " UTC | " +
+          fmtMins(TIMES.et) + " ET";
+      }
+      const echo = document.getElementById("live-echo");
+      if (echo) echo.textContent = "Wed 07 Oct 2026 " + fmtMins(TIMES.ist);
+    }
+
+    function setCaption(main, sub = "") {
+      document.getElementById("caption-main").textContent = main;
+      document.getElementById("caption-sub").textContent = sub;
+    }
+
+    function showScene(id) {
+      for (const el of document.querySelectorAll(".scene-panel")) {
+        el.classList.toggle("active", el.id === id);
+      }
+    }
+
+    function setMode(liveWin, mode) {
+      const modes = liveWin.querySelectorAll(".mode");
+      modes.forEach((m) => {
+        const on = m.dataset.mode === mode;
+        m.classList.toggle("on", on);
+      });
+    }
+
+    const timers = [];
+    function at(ms, fn) {
+      timers.push(setTimeout(fn, ms));
+    }
+
+    let tickInterval = null;
+    function startTick() {
+      if (tickInterval) clearInterval(tickInterval);
+      tickInterval = setInterval(bumpLiveClock, 800);
+    }
+    function stopTick() {
+      if (tickInterval) clearInterval(tickInterval);
+      tickInterval = null;
+    }
+
+    // Total ~48s
+    at(0, () => {
+      showScene("scene-disclaimer");
+      setCaption("UI mock-up — not an in-game capture", "WorldClock14 / TimeShift");
+    });
+
+    at(3200, () => {
+      showScene("scene-1");
+      setCaption("Live now", "Default mode — base zone, per-zone Copy, Copy for chat");
+      startTick();
+    });
+
+    at(6200, () => {
+      document.getElementById("live-copy-btn").click();
+      document.getElementById("live-flash").classList.remove("hidden");
+      document.getElementById("live-flash").classList.add("visible");
+    });
+
+    at(7800, () => {
+      const win = document.getElementById("live-win");
+      setMode(win, "custom");
+      setCaption("Switching to Custom time", "Same window — typed time in the base zone");
+    });
+
+    at(9200, () => {
+      stopTick();
+      showScene("scene-2");
+      setCaption("Custom time", "Parsing, +1d day marker, DST note, copied line");
+      const field = document.getElementById("custom-field");
+      field.textContent = "Wed 2";
+      at(200, () => { field.textContent = "Wed 21"; });
+      at(400, () => { field.textContent = "Wed 21:00"; });
+    });
+
+    at(14800, () => {
+      showScene("scene-3");
+      setCaption("Resilience", 'Bad zone id → error row; other zones still convert');
+    });
+
+    at(19800, () => {
+      showScene("scene-4");
+      setCaption("TimeShift settings (/tzconfig)", "Zones, reorder, copied-line format, preview");
+      const win = document.getElementById("settings-win");
+      win.style.transform = "translateY(0)";
+      const jstRow = document.querySelector('#settings-zones tr[data-row="jst"]');
+      const cb = jstRow.querySelector(".cb");
+      jstRow.classList.remove("row-disabled");
+      cb.classList.remove("off");
+      cb.textContent = "✓";
+    });
+
+    at(23000, () => {
+      document.getElementById("settings-win").style.transform = "translateY(-140px)";
+    });
+
+    at(24800, () => {
+      const preview = document.getElementById("settings-preview");
+      preview.textContent = "20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET";
+    });
+
+    at(28800, () => {
+      showScene("scene-5");
+      setCaption("/tz and /tzconfig", "Commands, help text, parse/DST log lines (mock /xllog)");
+    });
+
+    at(38000, () => {
+      stopTick();
+      window.__WALKTHROUGH_COMPLETE__ = true;
+    });
+  </script>
+</body>
+</html>
