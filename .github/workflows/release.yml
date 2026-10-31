@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install the Dalamud development distribution
+        shell: pwsh
+        run: |
+          $dest = Join-Path $env:APPDATA 'XIVLauncher\addon\Hooks\dev'
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          Invoke-WebRequest -UseBasicParsing -Uri 'https://goatcorp.github.io/dalamud-distrib/latest.zip' -OutFile dalamud.zip
+          Expand-Archive -Path dalamud.zip -DestinationPath $dest -Force
+
+      - name: Build WorldClock14
+        run: dotnet build WorldClock14.csproj -c Release
+
+      - name: Create GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $zip = Get-ChildItem -Path bin/Release -Recurse -Filter latest.zip | Select-Object -First 1
+          if (-not $zip) { throw 'latest.zip not found under bin/Release' }
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip.FullName)
+          try {
+            $entry = $archive.Entries | Where-Object { $_.Name -like '*.json' } | Select-Object -First 1
+            if (-not $entry) { throw 'No manifest JSON in latest.zip' }
+            $reader = New-Object System.IO.StreamReader($entry.Open())
+            try {
+              $manifest = $reader.ReadToEnd() | ConvertFrom-Json
+            } finally {
+              $reader.Dispose()
+            }
+          } finally {
+            $archive.Dispose()
+          }
+
+          $assemblyVersion = [string]$manifest.AssemblyVersion
+
+          if ($env:GITHUB_EVENT_NAME -eq 'push') {
+            $tag = $env:GITHUB_REF_NAME
+            if ($tag -replace '^v','' -ne $assemblyVersion) {
+              throw "Tag $tag must match AssemblyVersion $assemblyVersion in latest.zip"
+            }
+            gh release create $tag $zip.FullName --title $tag --generate-notes
+          } else {
+            $tag = "v$assemblyVersion"
+            gh release view $tag 2>$null | Out-Null
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host "Release $tag already exists; skipping."
+              exit 0
+            }
+            gh release create $tag $zip.FullName --title $tag --generate-notes
+          }
