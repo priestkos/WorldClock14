@@ -1,5 +1,7 @@
 # WorldClock14
 
+<img src="images/icon.png" width="96">
+
 Convert a time into every timezone you care about, then paste it into chat.
 
 ## Screenshots
@@ -14,8 +16,6 @@ Screenshots are mock-ups illustrating the UI, not captures from the live game.
 | **Resilience** — a bad zone id becomes an error row; other zones still convert. | **Settings** (`/tzconfig`) — zones, add/reorder/delete, base zone, copied-line format, preview. |
 | ![Slash commands and log output](docs/screenshots/05-commands-scene.png) | |
 | **`/tz` / `/tzconfig`** — commands, help text, and log lines for parse/DST errors (mock `/xllog` panel). | |
-
-Sources live under `docs/screenshots/src/`.
 
 ### Mock-up video
 
