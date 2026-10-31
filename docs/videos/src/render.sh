@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerate README mock-up walkthrough video + GIF (from repo root).
+# Render README mock-up walkthrough video + GIF (from repo root).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT"

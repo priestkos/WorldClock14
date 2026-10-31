@@ -42,14 +42,46 @@ html, body {
 .scene-panel {
   position: absolute;
   inset: 0;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(165deg, #1a2638 0%, #0b3d4a 35%, #062018 70%, #0a0a12 100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px) scale(0.992);
+  transition:
+    opacity 0.52s ease,
+    transform 0.52s ease,
+    visibility 0s linear 0.52s;
+  z-index: 1;
+}
+
+.scene-panel.pre-enter {
+  opacity: 0;
+  transform: translateY(10px) scale(0.992);
 }
 
 .scene-panel.active {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.52s ease,
+    transform 0.52s ease,
+    visibility 0s;
+  z-index: 3;
+}
+
+.scene-panel.is-leaving {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.994);
+  z-index: 2;
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s ease,
+    visibility 0s linear 0.42s;
 }
 
 .scene-panel::before {
@@ -128,4 +160,87 @@ html, body {
 .flash.visible,
 .echo.visible {
   display: block;
+}
+
+#cursor-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#walkthrough-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  margin: -3px 0 0 -3px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
+  transform: translate(640px, 420px);
+  transition: transform 0.05s linear;
+  will-change: transform;
+}
+
+#walkthrough-cursor.clicking {
+  transform-origin: 4px 4px;
+}
+
+#walkthrough-cursor.clicking svg {
+  transform: scale(0.92);
+  transform-origin: 4px 4px;
+}
+
+#click-ripples {
+  position: absolute;
+  inset: 0;
+}
+
+.click-ripple {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(61, 194, 240, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(61, 194, 240, 0.35);
+  animation: walkthrough-ripple 420ms ease-out forwards;
+}
+
+@keyframes walkthrough-ripple {
+  from {
+    opacity: 0.95;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+.walkthrough-press {
+  transform: scale(0.97);
+  filter: brightness(0.9);
+  transition: transform 0.08s ease, filter 0.08s ease;
+}
+
+.mode.walkthrough-press,
+.primary.walkthrough-press,
+.ghost.walkthrough-press,
+.cb.walkthrough-press {
+  transform: scale(0.96);
+}
+
+#caption {
+  transition: opacity 0.35s ease;
+}
+
+#caption.caption-updating {
+  opacity: 0.72;
+}
+
+.preview-highlight {
+  box-shadow: 0 0 0 1px rgba(61, 194, 240, 0.45);
+  transition: box-shadow 0.35s ease;
 }
