@@ -15,14 +15,6 @@ Screenshots are mock-ups illustrating the UI, not captures from the live game.
 | ![Slash commands and log output](docs/screenshots/05-commands-scene.png) | |
 | **`/tz` / `/tzconfig`** — commands, help text, and log lines for parse/DST errors (mock `/xllog` panel). | |
 
-Regenerate PNGs from the HTML sources:
-
-```bash
-npm install
-npx playwright install chromium
-node docs/screenshots/capture.mjs
-```
-
 Sources live under `docs/screenshots/src/`.
 
 ### Mock-up video
@@ -32,12 +24,6 @@ These are the same HTML mock-ups as the screenshots, recorded in a browser — *
 ![Mock-up walkthrough preview](docs/videos/mockup-walkthrough.gif)
 
 [Full walkthrough (MP4)](docs/videos/mockup-walkthrough.mp4)
-
-Regenerate:
-
-```bash
-./docs/videos/src/render.sh
-```
 
 ### Feature coverage
 
