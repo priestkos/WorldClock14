@@ -41,9 +41,22 @@ jobs:
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           $archive = [System.IO.Compression.ZipFile]::OpenRead($zip.FullName)
           try {
-            $entry = $archive.Entries | Where-Object { $_.Name -like '*.json' } | Select-Object -First 1
-            if (-not $entry) { throw 'No manifest JSON in latest.zip' }
-            $reader = New-Object System.IO.StreamReader($entry.Open())
+            $dllEntries = @($archive.Entries | Where-Object { $_.Name -like '*.dll' })
+            if ($dllEntries.Count -eq 0) {
+              throw 'No plugin .dll found inside latest.zip'
+            }
+            $dllEntry = $dllEntries | Where-Object {
+              [System.IO.Path]::GetFileNameWithoutExtension($_.Name) -eq 'WorldClock14'
+            } | Select-Object -First 1
+            if (-not $dllEntry) {
+              $dllEntry = $dllEntries | Select-Object -First 1
+            }
+            $manifestName = [System.IO.Path]::ChangeExtension($dllEntry.Name, '.json')
+            $manifestEntry = $archive.Entries | Where-Object { $_.Name -eq $manifestName }
+            if (-not $manifestEntry) {
+              throw "Manifest $manifestName not found inside latest.zip"
+            }
+            $reader = New-Object System.IO.StreamReader($manifestEntry.Open())
             try {
               $manifest = $reader.ReadToEnd() | ConvertFrom-Json
             } finally {
@@ -54,6 +67,9 @@ jobs:
           }
 
           $assemblyVersion = [string]$manifest.AssemblyVersion
+          if ([string]::IsNullOrWhiteSpace($assemblyVersion)) {
+            throw 'AssemblyVersion missing from plugin manifest'
+          }
 
           if ($env:GITHUB_EVENT_NAME -eq 'push') {
             $tag = $env:GITHUB_REF_NAME
