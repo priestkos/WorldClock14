@@ -119,8 +119,8 @@ runTimeline({
 
     at(10_600, () => {
       stopTick();
+      setCaption("Custom time", "Parsing, +1d day marker, DST note, copied line");
       void scenes.showScene("scene-2").then(() => {
-        setCaption("Custom time", "Parsing, +1d day marker, DST note, copied line");
         const field = document.getElementById("custom-field");
         field.textContent = "Wed 2";
         setTimeout(() => {
