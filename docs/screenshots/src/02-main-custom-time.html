@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>WorldClock14 — Custom time</title>
+<title>02 — Custom time</title>
 <link rel="stylesheet" href="_shared.css">
 </head>
-<body>
+<body class="standalone">
   <div class="win" id="shot">
     <div class="titlebar">
       <div class="title">TimeShift</div>
@@ -22,7 +22,7 @@
     <div class="label">Times are read in</div>
     <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
 
-    <table>
+    <table class="data">
       <tr>
         <td class="zone base">IST</td>
         <td><span class="time">21:00</span></td>
@@ -45,7 +45,8 @@
       </tr>
     </table>
 
-    <button class="primary">Copy for chat</button>
+    <button type="button" class="primary">Copy for chat</button>
+    <div class="note warn">Careful: the clocks change around that time in the base zone.</div>
     <div class="flash">Copied: 21:00 IST | 00:30 JST Thu +1d | 15:30 UTC | 11:30 ET</div>
     <div class="echo">Wed 07 Oct 2026 21:00</div>
   </div>

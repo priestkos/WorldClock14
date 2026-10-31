@@ -4,6 +4,8 @@ bin/
 *.user
 .idea/
 tests/artifacts/
+node_modules/
+package-lock.json
 
 # local-only: previews, mockups and design notes stay out of the repo
 preview.html
