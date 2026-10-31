@@ -25,6 +25,20 @@ node docs/screenshots/capture.mjs
 
 Sources live under `docs/screenshots/src/`.
 
+### Mock-up video
+
+These are the same HTML mock-ups as the screenshots, recorded in a browser — **not** captures from the live game.
+
+![Mock-up walkthrough preview](docs/videos/mockup-walkthrough.gif)
+
+[Full walkthrough (MP4)](docs/videos/mockup-walkthrough.mp4)
+
+Regenerate:
+
+```bash
+./docs/videos/src/render.sh
+```
+
 ### Feature coverage
 
 Every user-facing surface from the plugin code is shown above (or named in a log line where there is no separate window).
