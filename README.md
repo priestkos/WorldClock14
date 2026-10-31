@@ -1,5 +1,7 @@
 # WorldClock14
 
+<img src="images/icon.png" width="96">
+
 Convert a time into every timezone you care about, then paste it into chat.
 
 ## Screenshots
