@@ -11,12 +11,6 @@ namespace WorldClock14;
 /// <summary>Zone list, base zone and the shape of the copied line. Saves on every discrete edit and on close.</summary>
 public sealed class ConfigWindow : Window, IDisposable
 {
-    private static readonly Vector4 Accent = new(0.24f, 0.76f, 0.94f, 1f);
-    private static readonly Vector4 Idle = new(0.13f, 0.15f, 0.22f, 1f);
-    private static readonly Vector4 IdleHover = new(0.20f, 0.23f, 0.33f, 1f);
-    private static readonly Vector4 TextDim = new(0.60f, 0.65f, 0.78f, 1f);
-    private static readonly Vector4 Danger = new(0.95f, 0.44f, 0.44f, 1f);
-
     private readonly Configuration config;
     private readonly Action<string>? requestCopy;
 
@@ -26,21 +20,23 @@ public sealed class ConfigWindow : Window, IDisposable
     private string customId = "Asia/Tokyo";
 
     public ConfigWindow(Configuration config, Action<string>? requestCopy = null)
-        : base("TimeShift settings###WorldClock14Config")
+        : base("WorldClock14 settings###WorldClock14Config")
     {
         this.config = config;
         this.requestCopy = requestCopy;
 
-        Flags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize;
-        Size = new Vector2(560, 0) * ImGuiHelpers.GlobalScale;
+        Flags = ImGuiWindowFlags.NoCollapse;
+        Size = new Vector2(620, 560);
         SizeCondition = ImGuiCond.FirstUseEver;
+        SizeConstraints = new WindowSizeConstraints
+        {
+            MinimumSize = new Vector2(520, 320),
+            MaximumSize = new Vector2(1100, 1000),
+        };
     }
 
     public override void Draw()
     {
-        using var padding = ImRaii.PushStyle(ImGuiStyleVar.WindowPadding, new Vector2(12, 12) * ImGuiHelpers.GlobalScale);
-        using var rounding = ImRaii.PushStyle(ImGuiStyleVar.FrameRounding, 6 * ImGuiHelpers.GlobalScale);
-
         DrawZones();
         ImGui.Spacing();
         DrawAddZone();
@@ -58,10 +54,8 @@ public sealed class ConfigWindow : Window, IDisposable
 
     private void DrawZones()
     {
-        using (ImRaii.PushColor(ImGuiCol.Text, Accent))
-            ImGui.TextUnformatted("Zones");
-        using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-            ImGui.TextUnformatted("Order is the order they appear in the copied line.");
+        ImGui.TextUnformatted("Zones");
+        ImGui.TextUnformatted("Order is the order they appear in the copied line.");
 
         const ImGuiTableFlags flags = ImGuiTableFlags.RowBg | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.NoPadOuterX;
         if (!ImGui.BeginTable("##tzconfigzones", 5, flags)) return;
@@ -119,8 +113,7 @@ public sealed class ConfigWindow : Window, IDisposable
         }
         else if (zone.IsLocal)
         {
-            using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-                ImGui.TextUnformatted("system local");
+            ImGui.TextUnformatted("system local");
         }
         else
         {
@@ -135,8 +128,7 @@ public sealed class ConfigWindow : Window, IDisposable
             if (resolved is null && zone.Id.Trim().Length > 0)
             {
                 ImGui.SameLine();
-                using (ImRaii.PushColor(ImGuiCol.Text, Danger))
-                    ImGui.TextUnformatted("unknown zone");
+                ImGui.TextUnformatted("unknown zone");
             }
         }
 
@@ -144,14 +136,12 @@ public sealed class ConfigWindow : Window, IDisposable
         var live = ZoneResolver.Resolve(zone);
         if (live is null)
         {
-            using (ImRaii.PushColor(ImGuiCol.Text, Danger))
-                ImGui.TextUnformatted("--");
+            ImGui.TextUnformatted("--");
         }
         else
         {
             var offset = live.GetUtcOffset(DateTimeOffset.UtcNow);
-            using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-                ImGui.TextUnformatted((offset < TimeSpan.Zero ? "-" : "+") + offset.Duration().ToString(@"hh\:mm"));
+            ImGui.TextUnformatted((offset < TimeSpan.Zero ? "-" : "+") + offset.Duration().ToString(@"hh\:mm"));
         }
 
         ImGui.TableSetColumnIndex(4);
@@ -163,28 +153,21 @@ public sealed class ConfigWindow : Window, IDisposable
     {
         const float width = 28f;
 
-        using (ImRaii.PushColor(ImGuiCol.Button, Idle))
-        using (ImRaii.PushColor(ImGuiCol.ButtonHovered, IdleHover))
+        using (ImRaii.Disabled(index == 0))
         {
-            using (ImRaii.Disabled(index == 0))
-            {
-                if (ImGui.Button("^##up", new Vector2(width, 0) * ImGuiHelpers.GlobalScale)) Move(index, index - 1);
-            }
-
-            ImGui.SameLine();
-
-            using (ImRaii.Disabled(index >= config.Zones.Count - 1))
-            {
-                if (ImGui.Button("v##down", new Vector2(width, 0) * ImGuiHelpers.GlobalScale)) Move(index, index + 1);
-            }
-
-            ImGui.SameLine();
-
-            using (ImRaii.PushColor(ImGuiCol.Text, Danger))
-            {
-                if (ImGui.Button("X##del", new Vector2(width, 0) * ImGuiHelpers.GlobalScale)) RemoveAt(index);
-            }
+            if (ImGui.Button("^##up", new Vector2(width, 0) * ImGuiHelpers.GlobalScale)) Move(index, index - 1);
         }
+
+        ImGui.SameLine();
+
+        using (ImRaii.Disabled(index >= config.Zones.Count - 1))
+        {
+            if (ImGui.Button("v##down", new Vector2(width, 0) * ImGuiHelpers.GlobalScale)) Move(index, index + 1);
+        }
+
+        ImGui.SameLine();
+
+        if (ImGui.Button("X##del", new Vector2(width, 0) * ImGuiHelpers.GlobalScale)) RemoveAt(index);
     }
 
     private void Move(int from, int to)
@@ -206,8 +189,7 @@ public sealed class ConfigWindow : Window, IDisposable
     {
         var presets = Defaults.Presets();
 
-        using (ImRaii.PushColor(ImGuiCol.Text, Accent))
-            ImGui.TextUnformatted("Add a zone");
+        ImGui.TextUnformatted("Add a zone");
 
         ImGui.SetNextItemWidth(260 * ImGuiHelpers.GlobalScale);
         var preview = customMode
@@ -256,8 +238,7 @@ public sealed class ConfigWindow : Window, IDisposable
             ImGui.InputText("Zone id##customid", ref customId, 64);
             if (customId.Trim().Length > 0 && ZoneResolver.ResolveId(customId) is null)
             {
-                using (ImRaii.PushColor(ImGuiCol.Text, Danger))
-                    ImGui.TextUnformatted($"\"{customId}\" is not a zone id this machine knows.");
+                ImGui.TextUnformatted($"\"{customId}\" is not a zone id this machine knows.");
             }
         }
     }
@@ -266,10 +247,8 @@ public sealed class ConfigWindow : Window, IDisposable
 
     private void DrawBaseZone()
     {
-        using (ImRaii.PushColor(ImGuiCol.Text, Accent))
-            ImGui.TextUnformatted("Base zone");
-        using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-            ImGui.TextUnformatted("A time you type is read as being in this zone.");
+        ImGui.TextUnformatted("Base zone");
+        ImGui.TextUnformatted("A time you type is read as being in this zone.");
 
         UiHelpers.BaseZoneCombo(config, "##tzconfigbase");
     }
@@ -278,8 +257,7 @@ public sealed class ConfigWindow : Window, IDisposable
 
     private void DrawFormat()
     {
-        using (ImRaii.PushColor(ImGuiCol.Text, Accent))
-            ImGui.TextUnformatted("Copied line");
+        ImGui.TextUnformatted("Copied line");
 
         var use24 = config.Format.Use24Hour;
         if (ImGui.Checkbox("24-hour times##f24", ref use24))
@@ -333,8 +311,7 @@ public sealed class ConfigWindow : Window, IDisposable
 
     private void DrawPreview()
     {
-        using (ImRaii.PushColor(ImGuiCol.Text, Accent))
-            ImGui.TextUnformatted("Preview");
+        ImGui.TextUnformatted("Preview");
 
         var baseZone = ZoneResolver.ResolveBaseOrLocal(config.BaseZone);
         var today = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, baseZone).Date;
@@ -356,18 +333,15 @@ public sealed class ConfigWindow : Window, IDisposable
             preview = error;
         }
 
-        using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-            ImGui.TextUnformatted(header);
+        ImGui.TextUnformatted(header);
 
-        using (ImRaii.PushColor(ImGuiCol.ChildBg, new Vector4(0.06f, 0.07f, 0.11f, 0.9f)))
         using (var child = ImRaii.Child("##preview", new Vector2(0, 54 * ImGuiHelpers.GlobalScale), true))
         {
             if (child.Success)
             {
                 if (preview.Length == 0)
                 {
-                    using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-                        ImGui.TextUnformatted("No enabled zones - add one above.");
+                ImGui.TextUnformatted("No enabled zones - add one above.");
                 }
                 else
                 {
@@ -395,10 +369,9 @@ public sealed class ConfigWindow : Window, IDisposable
         }
 
         ImGui.SameLine();
-        using (ImRaii.PushColor(ImGuiCol.Text, TextDim))
-            ImGui.TextUnformatted(config.BaseZone.IsLocal
-                ? "Saved automatically."
-                : $"Saved automatically. Base: {config.BaseZone.Describe()}");
+        ImGui.TextUnformatted(config.BaseZone.IsLocal
+            ? "Saved automatically."
+            : $"Saved automatically. Base: {config.BaseZone.Describe()}");
     }
 
     private void Save() => config.Save();

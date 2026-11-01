@@ -21,7 +21,7 @@ public sealed class Plugin : IDalamudPlugin
 
     private readonly Configuration configuration;
     private readonly WindowSystem windowSystem = new("WorldClock14");
-    private readonly TimeShiftWindow mainWindow;
+    private readonly WorldClockWindow mainWindow;
     private readonly ConfigWindow configWindow;
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed class Plugin : IDalamudPlugin
         configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         configuration.Normalize();
 
-        mainWindow = new TimeShiftWindow(configuration, QueueCopy, ToggleConfig);
+        mainWindow = new WorldClockWindow(configuration, QueueCopy, ToggleConfig);
         configWindow = new ConfigWindow(configuration, QueueCopy);
 
         windowSystem.AddWindow(mainWindow);

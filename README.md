@@ -12,7 +12,7 @@ Screenshots are mock-ups illustrating the UI, not captures from the live game.
 |---|---|
 | ![Live now — current time in all zones](docs/screenshots/01-main-live-now.png) | ![Custom time — typed time with day rollover](docs/screenshots/02-main-custom-time.png) |
 | **Live now** — default mode, base zone picker, per-zone **Copy**, **Copy for chat**, and the copied flash line. | **Custom time** — input parsing, **+1d** day marker, DST ambiguity note, echo line. |
-| ![Bad zone row in results](docs/screenshots/03-main-warnings-errors.png) | ![TimeShift settings](docs/screenshots/04-settings.png) |
+| ![Bad zone row in results](docs/screenshots/03-main-warnings-errors.png) | ![WorldClock14 settings](docs/screenshots/04-settings.png) |
 | **Resilience** — a bad zone id becomes an error row; other zones still convert. | **Settings** (`/tzconfig`) — zones, add/reorder/delete, base zone, copied-line format, preview. |
 | ![Slash commands and log output](docs/screenshots/05-commands-scene.png) | |
 | **`/tz` / `/tzconfig`** — commands, help text, and log lines for parse/DST errors (mock `/xllog` panel). | |
@@ -31,7 +31,7 @@ Every user-facing surface from the plugin code is shown above (or named in a log
 
 | Feature | Where |
 |---|---|
-| Main window **TimeShift** | 01–03, 05 |
+| Main window **WorldClock14** | 01–03, 05 |
 | **Settings** button → config window | 01–03 |
 | **Live now** / **Custom time** modes | 01, 02, 05 |
 | Custom time input + placeholder hint (`20:00 · 8pm · …`) | 02 (filled); empty-field note `Type a time - …` appears in the same footer area when input is blank |
@@ -44,7 +44,7 @@ Every user-facing surface from the plugin code is shown above (or named in a log
 | Parse errors (`I don't understand…`) | 05 log |
 | DST gap refusal (`doesn't exist … clocks jump forward`) | 05 log |
 | Unknown zone row (`unknown zone "…"`) | 03 |
-| **TimeShift settings** window | 04 |
+| **WorldClock14 settings** window | 04 |
 | Zone enable, label, id / fixed minutes / **system local**, UTC **Now** offset | 04 |
 | Reorder **^** **v**, delete **X** | 04 |
 | **Add a zone** preset picker + **Add** | 04 |
@@ -104,7 +104,7 @@ zone in the list.
 | `TimeConversion.cs` | all logic — parsing, zone resolution, conversion, chat formatting (no Dalamud) |
 | `Defaults.cs` | seeded zones and presets (no Dalamud) |
 | `Configuration.cs` | `IPluginConfiguration`, normalization of a hand-edited config |
-| `TimeShiftWindow.cs` | main window |
+| `WorldClockWindow.cs` | main window |
 | `ConfigWindow.cs` | settings |
 | `UiHelpers.cs` | shared widgets |
 | `preview.html` | window mockup, live via `Intl` |
