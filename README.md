@@ -137,6 +137,8 @@ python ../compare.py grid.net.tsv grid.icu.tsv
 
 ## Build
 
+Releases are created automatically on each push to `main` that changes the plugin binary; the version is the next four-part number above the latest GitHub release (or the csproj version when that is higher).
+
 Needs the .NET 10 SDK and the Dalamud dev distrib at
 `%AppData%\XIVLauncher\addon\Hooks\dev` (or `DALAMUD_HOME`).
 
