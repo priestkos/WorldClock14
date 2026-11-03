@@ -110,6 +110,15 @@ internal static class Program
         Check("mon 09:00", Wall("mon 09:00", today), "2026-10-12 09:00");
         Check("next wed rolls a full week", Wall("next wed 21:00", today), "2026-10-14 21:00");
         Check("next mon skips this week's Monday", Wall("next mon 09:00", today), "2026-10-19 09:00");
+        Check("Tomorrow 8pm keeps its T", Wall("Tomorrow 8pm", today), "2026-10-08 20:00");
+        Check("Tue 20:00 keeps its T", Wall("Tue 20:00", today), "2026-10-13 20:00");
+        Check("Thu 19:00 keeps its T", Wall("Thu 19:00", today), "2026-10-08 19:00");
+        Check("Today 20:00 keeps its T", Wall("Today 20:00", today), "2026-10-07 20:00");
+        Check("Tonight 9pm keeps its T", Wall("Tonight 9pm", today), "2026-10-07 21:00");
+        Check("ISO T separator, uppercase", Wall("2026-10-07T20:00", today), "2026-10-07 20:00");
+        Check("ISO t separator, lowercase", Wall("2026-10-07t20:00", today), "2026-10-07 20:00");
+        Check("year 9998 still parses", Wall("9998-12-30 20:00", today), "9998-12-30 20:00");
+        Check("year 0002 still parses", Wall("0002-01-02 20:00", today), "0002-01-02 20:00");
         Check("01-05 after October rolls to next year", Wall("01-05 20:00", today), "2027-01-05 20:00");
 
         Assert("parsed Echo is populated", TimeInput.TryParse("20:00", today, out var p, out _) && p.Echo.Length > 0);
@@ -134,6 +143,8 @@ internal static class Program
         CheckReject("day 40", "2026-01-40 20:00");
         CheckReject("military minute 99", "2099");
         CheckReject("am on a 24h hour", "20am");
+        CheckReject("year 9999 (DateTime edge clamps)", "9999-12-31 23:00");
+        CheckReject("year 0001 (DateTime edge clamps)", "0001-01-01 01:00");
     }
 
     private static void InstantResolution()

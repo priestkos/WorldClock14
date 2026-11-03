@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Dalamud.Configuration;
+using Newtonsoft.Json;
 
 namespace WorldClock14;
 
@@ -14,6 +15,8 @@ public sealed class Configuration : IPluginConfiguration
     public int Version { get; set; } = 1;
 
     /// <summary>Target zones, in the order they appear in the window and in the copied line.</summary>
+    // Replace, not Populate: Newtonsoft would otherwise append saved zones onto the defaults on every load.
+    [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
     public List<TimeZoneEntry> Zones { get; set; } = Defaults.CreateZones();
 
     /// <summary>The zone a typed time is read as. Defaults to whatever Windows is set to.</summary>

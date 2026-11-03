@@ -191,7 +191,8 @@ public static class TimeInput
             return false;
         }
 
-        var work = raw.Trim().Replace('T', ' ').Replace('/', '-');
+        // Only an ISO date/time T between digits; a blanket Replace ate the T in "Tue", "Thu", "Today", "Tomorrow".
+        var work = Regex.Replace(raw.Trim(), @"(?<=\d)[Tt](?=\d)", " ").Replace('/', '-');
         var tokens = MergeMeridiem(work.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries));
 
         DateTime? date = null;
@@ -359,7 +360,8 @@ public static class TimeInput
         }
 
         var m = RxIsoDate.Match(token);
-        if (m.Success &&
+        // Years 1 and 9999 sit on DateTime's edges, where zone conversion silently clamps instead of failing.
+        if (m.Success && int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture) is >= 2 and <= 9998 &&
             DateTime.TryParseExact(token, new[] { "yyyy-M-d", "yyyy-MM-dd" }, CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out date))
         {
