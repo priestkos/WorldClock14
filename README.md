@@ -4,6 +4,8 @@
 
 Convert a time into every timezone you care about, then paste it into chat.
 
+> **No support will be provided. This software is to be used as is, without warranty of any kind.**
+
 ## Screenshots
 
 Screenshots are mock-ups illustrating the UI, not captures from the live game.
