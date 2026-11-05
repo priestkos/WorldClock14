@@ -1,3 +1,59 @@
+.mockup-banner {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1200;
+  background: linear-gradient(135deg, #f5c842, #e8a020);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.scene-label {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 9998;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #aaa;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 3px;
+  max-width: calc(100% - 24px);
+}
+
+.shot-frame {
+  width: 1280px;
+  height: 720px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(165deg, #1a2638 0%, #0b3d4a 35%, #062018 70%, #0a0a12 100%);
+}
+
+.shot-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 420px 280px at 18% 78%, rgba(80, 140, 90, 0.25), transparent),
+    radial-gradient(ellipse 500px 320px at 82% 22%, rgba(60, 100, 160, 0.2), transparent);
+  pointer-events: none;
+}
+
+.shot-frame .win-centered {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
 :root {
   --accent: #3dc2f0;
   --accent-ink: #06121b;

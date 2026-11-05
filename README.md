@@ -8,7 +8,7 @@ Convert a time into every timezone you care about, then paste it into chat.
 
 ## Screenshots
 
-Screenshots are mock-ups illustrating the UI, not captures from the live game.
+These images are **mock-ups** (HTML rendered to PNG at 1280×720). They are not real in-game captures. Each frame shows a gold **Mock-up** badge and a bottom label naming the screen.
 
 | | |
 |---|---|
@@ -21,11 +21,12 @@ Screenshots are mock-ups illustrating the UI, not captures from the live game.
 
 ### Mock-up video
 
-These are the same HTML mock-ups as the screenshots, recorded in a browser — **not** captures from the live game.
+A short **mock-up** walkthrough (not real gameplay) cross-fades through the same scenes with on-screen beat labels and bottom captions. The gold **Mock-up** label stays visible for the whole clip.
 
 ![Mock-up walkthrough preview](docs/videos/mockup-walkthrough.gif)
 
-[Full walkthrough (MP4)](docs/videos/mockup-walkthrough.mp4)
+- [mockup-walkthrough.mp4](docs/videos/mockup-walkthrough.mp4) (H.264, 1280×720, ~15 s)
+- [mockup-walkthrough.gif](docs/videos/mockup-walkthrough.gif) (preview)
 
 ### Feature coverage
 
