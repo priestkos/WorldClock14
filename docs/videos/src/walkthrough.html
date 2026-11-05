@@ -2,181 +2,232 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>TimeShift mock-up walkthrough</title>
+<title>WorldClock14 mock-up walkthrough</title>
 <link rel="stylesheet" href="walkthrough.css">
 </head>
 <body>
-  <div id="stage">
-    <div id="caption"><span id="caption-main"></span><span class="sub" id="caption-sub"></span></div>
+  <div class="mockup-banner">Mock-up</div>
+  <div class="beat-label" id="beat-label">Live now</div>
 
-    <div class="scene-panel active" id="scene-disclaimer">
-      <p class="disclaimer-title">TimeShift</p>
-      <p class="disclaimer-body">UI mock-up walkthrough</p>
-      <p class="disclaimer-note">Not an in-game capture — HTML mock-ups only</p>
-    </div>
-
-    <div class="scene-panel" id="scene-1">
-      <div class="panel-inner">
-        <div class="win" id="live-win">
-          <div class="titlebar">
-            <div class="title">TimeShift</div>
-            <div class="ghost">Settings</div>
-          </div>
-          <div class="modes">
-            <div class="mode on clickable" data-mode="live">Live now</div>
-            <div class="mode clickable" data-mode="custom">Custom time</div>
-          </div>
-          <div class="label">Times are read in</div>
-          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
-          <table class="data" id="live-table">
-            <tr><td class="zone base">IST</td><td><span class="time" data-zone="ist">20:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">JST</td><td><span class="time" data-zone="jst">23:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">UTC</td><td><span class="time" data-zone="utc">14:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">ET</td><td><span class="time" data-zone="et">10:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-          </table>
-          <button type="button" class="primary" id="live-copy-btn">Copy for chat</button>
-          <div class="flash hidden" id="live-flash">Copied: 20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
-          <div class="echo visible" id="live-echo">Wed 07 Oct 2026 20:00</div>
+  <div class="scene" id="scene-1">
+    <div class="panel-inner">
+      <div class="win">
+        <div class="titlebar">
+          <div class="title">WorldClock14</div>
+          <div class="ghost">Settings</div>
         </div>
-      </div>
-    </div>
-
-    <div class="scene-panel" id="scene-2">
-      <div class="panel-inner">
-        <div class="win">
-          <div class="titlebar">
-            <div class="title">TimeShift</div>
-            <div class="ghost">Settings</div>
-          </div>
-          <div class="modes">
-            <div class="mode">Live now</div>
-            <div class="mode on">Custom time</div>
-          </div>
-          <div class="field" id="custom-field">Wed 21:00</div>
-          <div class="label">Times are read in</div>
-          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
-          <table class="data">
-            <tr><td class="zone base">IST</td><td><span class="time">21:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">JST</td><td><span class="time">00:30</span><span class="delta plus">+1d</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">UTC</td><td><span class="time">15:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">ET</td><td><span class="time">11:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-          </table>
-          <button type="button" class="primary">Copy for chat</button>
-          <div class="note warn">Careful: the clocks change around that time in the base zone.</div>
-          <div class="flash">Copied: 21:00 IST | 00:30 JST Thu +1d | 15:30 UTC | 11:30 ET</div>
-          <div class="echo">Wed 07 Oct 2026 21:00</div>
+        <div class="modes">
+          <div class="mode on">Live now</div>
+          <div class="mode">Custom time</div>
         </div>
-      </div>
-    </div>
-
-    <div class="scene-panel" id="scene-3">
-      <div class="panel-inner">
-        <div class="win">
-          <div class="titlebar">
-            <div class="title">TimeShift</div>
-            <div class="ghost">Settings</div>
-          </div>
-          <div class="modes">
-            <div class="mode on">Live now</div>
-            <div class="mode">Custom time</div>
-          </div>
-          <div class="label">Times are read in</div>
-          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
-          <table class="data">
-            <tr><td class="zone base">IST</td><td><span class="time">20:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-            <tr><td class="zone">BadZone</td><td><span class="errtext">unknown zone "Not/A/Real/Zone"</span></td><td style="width:62px"></td></tr>
-            <tr><td class="zone">UTC</td><td><span class="time">14:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
-          </table>
-          <button type="button" class="primary">Copy for chat</button>
-          <div class="echo">Wed 07 Oct 2026 20:00</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="scene-panel" id="scene-4">
-      <div class="panel-inner">
-        <div class="win settings settings-scroll" id="settings-win">
-          <div class="titlebar"><div class="title">TimeShift settings</div></div>
-          <h2>Zones</h2>
-          <p class="hint">Order is the order they appear in the copied line.</p>
-          <table class="data" id="settings-zones">
-            <tr data-row="ist"><td style="width:26px"><span class="cb">✓</span></td><td class="zone" style="width:78px">IST</td><td class="zid">Asia/Kolkata</td><td class="zoff">+05:30</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
-            <tr class="row-disabled" data-row="jst"><td><span class="cb off"></span></td><td>JST</td><td class="zid">Asia/Tokyo</td><td class="zoff">+09:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
-            <tr data-row="utc"><td><span class="cb">✓</span></td><td>UTC</td><td class="zid">0</td><td class="zoff">+00:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
-            <tr data-row="et"><td><span class="cb">✓</span></td><td>ET</td><td class="zid">America/New_York</td><td class="zoff">-04:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
-            <tr><td><span class="cb">✓</span></td><td>TST</td><td class="zid">Not/A/Real/Zone <span style="color:var(--danger)">unknown zone</span></td><td class="zoff">--</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
-          </table>
-          <h2>Add a zone</h2>
-          <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px">
-            <div class="select" style="flex:1; margin:0"><span>PT&nbsp;&nbsp;(America/Los_Angeles)</span><span>▾</span></div>
-            <div class="ghost" style="color:var(--accent)">Add</div>
-          </div>
-          <p class="hint">Or choose <b>Custom...</b> in the same list:</p>
-          <div class="fmt-row">
-            <div class="fmt-field">Label&nbsp;<span>Example</span></div>
-            <div class="fmt-field" style="flex:1">Zone id&nbsp;<span>Not/A/Real/Zone</span></div>
-          </div>
-          <div class="hint" style="color:var(--danger)">"Not/A/Real/Zone" is not a zone id this machine knows.</div>
-          <h2>Base zone</h2>
-          <p class="hint">A time you type is read as being in this zone.</p>
-          <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
-          <h2>Copied line</h2>
-          <div class="check"><b>✓</b> 24-hour times</div>
-          <div class="check" id="fmt-weekday"><b>✓</b> Add the weekday when a zone lands on another day</div>
-          <div class="check"><b>□</b> Add the date instead of the weekday</div>
-          <div class="check"><b>□</b> One zone per line</div>
-          <div class="fmt-row">
-            <div class="fmt-field">Separator&nbsp;<span>|</span></div>
-            <div class="fmt-field">Prefix&nbsp;<span></span></div>
-            <div class="fmt-field">Suffix&nbsp;<span></span></div>
-          </div>
-          <h2>Preview</h2>
-          <div class="hint">Wed 07 Oct 2026 20:00  in IST</div>
-          <div class="preview" id="settings-preview">20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
-          <div class="ghost" style="color:var(--accent); display:inline-block; margin-top:6px">Copy preview</div>
-          <div class="foot"><div class="ghost">Reset to defaults</div><span>Saved automatically. Base: Asia/Kolkata</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="scene-panel" id="scene-5">
-      <div class="panel-inner scene-ui">
-        <div class="win">
-          <div class="titlebar"><div class="title">TimeShift</div><div class="ghost">Settings</div></div>
-          <div class="modes"><div class="mode on">Live now</div><div class="mode">Custom time</div></div>
-          <div class="label">Times are read in</div>
-          <div class="select"><span>Local</span><span>▾</span></div>
-          <p class="hint" style="margin-top:10px">Opened with bare <code>/tz</code> or Dalamud plugin UI.</p>
-        </div>
-        <div class="win log">
-          <div class="titlebar"><div class="title">/xllog</div></div>
-          <div class="log-body">
-            <span class="tag">[WorldClock14]</span> /tz opens the window. /tz &lt;time&gt; converts and copies it. /tz now converts this instant. /tzconfig opens settings. Times: 20:00, 8pm, 8:30pm, 2000, 20, Wed 21:00, tomorrow 20:00, 2026-10-07 20:00.<br><br>
-            <span class="tag">[WorldClock14]</span> I don't understand "not a time" (input: "not a time")<br>
-            <span class="tag">[WorldClock14]</span> 02:30 on 09 Mar doesn't exist in America/New_York - the clocks jump forward that day. (input: "02:30")<br>
-            <span class="tag">[WorldClock14]</span> Careful: the clocks change around that time in the base zone (input: "1:30am").
-          </div>
-          <ul class="cmd-list">
-            <li><code>/tz</code> — open TimeShift</li>
-            <li><code>/tz 20:00</code> — convert and copy (when CopyFromCommand is on)</li>
-            <li><code>/tz now</code> — convert this instant</li>
-            <li><code>/tz config</code> — open settings</li>
-            <li><code>/tzconfig</code> — open settings</li>
-            <li><code>/tz help</code> — print help to log</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div id="cursor-layer" aria-hidden="true">
-      <div id="click-ripples"></div>
-      <div id="walkthrough-cursor">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 3L4 23L9.5 17.5L13 24L16 22.5L12.5 16L20 15L4 3Z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/>
-        </svg>
+        <div class="label">Times are read in</div>
+        <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+        <table class="data">
+          <tr><td class="zone base">IST</td><td><span class="time">20:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">JST</td><td><span class="time">23:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">UTC</td><td><span class="time">14:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">ET</td><td><span class="time">10:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+        </table>
+        <button type="button" class="primary">Copy for chat</button>
+        <div class="flash">Copied: 20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
+        <div class="echo">Wed 07 Oct 2026 20:00</div>
       </div>
     </div>
   </div>
 
-  <script type="module" src="walkthrough-timeline.js"></script>
+  <div class="scene" id="scene-2">
+    <div class="panel-inner">
+      <div class="win">
+        <div class="titlebar">
+          <div class="title">WorldClock14</div>
+          <div class="ghost">Settings</div>
+        </div>
+        <div class="modes">
+          <div class="mode">Live now</div>
+          <div class="mode on">Custom time</div>
+        </div>
+        <div class="field">Wed 21:00</div>
+        <div class="label">Times are read in</div>
+        <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+        <table class="data">
+          <tr><td class="zone base">IST</td><td><span class="time">21:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">JST</td><td><span class="time">00:30</span><span class="delta plus">+1d</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">UTC</td><td><span class="time">15:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">ET</td><td><span class="time">11:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+        </table>
+        <button type="button" class="primary">Copy for chat</button>
+        <div class="note warn">Careful: the clocks change around that time in the base zone.</div>
+        <div class="flash">Copied: 21:00 IST | 00:30 JST Thu +1d | 15:30 UTC | 11:30 ET</div>
+        <div class="echo">Wed 07 Oct 2026 21:00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene-3">
+    <div class="panel-inner">
+      <div class="win">
+        <div class="titlebar">
+          <div class="title">WorldClock14</div>
+          <div class="ghost">Settings</div>
+        </div>
+        <div class="modes">
+          <div class="mode on">Live now</div>
+          <div class="mode">Custom time</div>
+        </div>
+        <div class="label">Times are read in</div>
+        <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+        <table class="data">
+          <tr><td class="zone base">IST</td><td><span class="time">20:00</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+          <tr><td class="zone">BadZone</td><td><span class="errtext">unknown zone "Not/A/Real/Zone"</span></td><td style="width:62px"></td></tr>
+          <tr><td class="zone">UTC</td><td><span class="time">14:30</span></td><td style="width:62px"><span class="copy">Copy</span></td></tr>
+        </table>
+        <button type="button" class="primary">Copy for chat</button>
+        <div class="echo">Wed 07 Oct 2026 20:00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene-4">
+    <div class="panel-inner">
+      <div class="win settings">
+        <div class="titlebar"><div class="title">WorldClock14 settings</div></div>
+        <h2>Zones</h2>
+        <p class="hint">Order is the order they appear in the copied line.</p>
+        <table class="data">
+          <tr><td style="width:26px"><span class="cb">✓</span></td><td class="zone" style="width:78px">IST</td><td class="zid">Asia/Kolkata</td><td class="zoff">+05:30</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+          <tr class="row-disabled"><td><span class="cb off"></span></td><td>JST</td><td class="zid">Asia/Tokyo</td><td class="zoff">+09:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+          <tr><td><span class="cb">✓</span></td><td>UTC</td><td class="zid">0</td><td class="zoff">+00:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+          <tr><td><span class="cb">✓</span></td><td>ET</td><td class="zid">America/New_York</td><td class="zoff">-04:00</td><td class="zbtn"><span>^</span><span>v</span><span class="del">X</span></td></tr>
+        </table>
+        <h2>Base zone</h2>
+        <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
+        <h2>Copied line</h2>
+        <div class="check"><b>✓</b> 24-hour times</div>
+        <div class="check"><b>✓</b> Add the weekday when a zone lands on another day</div>
+        <h2>Preview</h2>
+        <div class="preview">20:00 IST | 23:30 JST | 14:30 UTC | 10:30 ET</div>
+        <div class="foot"><div class="ghost">Reset to defaults</div><span>Saved automatically. Base: Asia/Kolkata</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="scene-5">
+    <div class="panel-inner scene-ui">
+      <div class="win">
+        <div class="titlebar"><div class="title">WorldClock14</div><div class="ghost">Settings</div></div>
+        <div class="modes"><div class="mode on">Live now</div><div class="mode">Custom time</div></div>
+        <div class="label">Times are read in</div>
+        <div class="select"><span>Local</span><span>▾</span></div>
+      </div>
+      <div class="win log">
+        <div class="titlebar"><div class="title">/xllog</div></div>
+        <div class="log-body">
+          <span class="tag">[WorldClock14]</span> /tz opens the window. /tz &lt;time&gt; converts and copies it. /tz now converts this instant. /tzconfig opens settings.<br><br>
+          <span class="tag">[WorldClock14]</span> I don't understand "not a time" (input: "not a time")<br>
+          <span class="tag">[WorldClock14]</span> 02:30 on 09 Mar doesn't exist in America/New_York - the clocks jump forward that day.
+        </div>
+        <ul class="cmd-list">
+          <li><code>/tz</code> — open WorldClock14</li>
+          <li><code>/tz 20:00</code> — convert and copy</li>
+          <li><code>/tzconfig</code> — open settings</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="video-caption" id="caption">WorldClock14 — mock-up walkthrough</div>
+
+  <script>
+    const scenes = [
+      {
+        id: "scene-1",
+        start: 0,
+        end: 3.2,
+        beat: "Live now",
+        caption: "Default mode — base zone picker, per-zone Copy, Copy for chat",
+      },
+      {
+        id: "scene-2",
+        start: 2.8,
+        end: 6.2,
+        beat: "Custom time",
+        caption: "Typed time in the base zone — +1d marker, DST note, echo line",
+      },
+      {
+        id: "scene-3",
+        start: 5.8,
+        end: 9.2,
+        beat: "Resilience",
+        caption: "Bad zone id → error row; other zones still convert",
+      },
+      {
+        id: "scene-4",
+        start: 8.8,
+        end: 12.2,
+        beat: "WorldClock14 settings",
+        caption: "/tzconfig — zones, copied-line format, preview",
+      },
+      {
+        id: "scene-5",
+        start: 11.8,
+        end: 15.0,
+        beat: "/tz · /tzconfig",
+        caption: "Commands, help text, parse/DST log lines (mock /xllog)",
+      },
+    ];
+
+    function easeOutCubic(x) {
+      return 1 - Math.pow(1 - x, 3);
+    }
+
+    function sceneMotion(t, start, end) {
+      const fade = 0.42;
+      let opacity = 0;
+      let ty = 12;
+      if (t < start) {
+        opacity = 0;
+        ty = 12;
+      } else if (t > end) {
+        opacity = 0;
+        ty = -8;
+      } else if (t < start + fade) {
+        const p = (t - start) / fade;
+        const e = easeOutCubic(p);
+        opacity = e;
+        ty = 12 * (1 - e);
+      } else if (t > end - fade) {
+        const p = (end - t) / fade;
+        const e = easeOutCubic(p);
+        opacity = e;
+        ty = -8 * (1 - e);
+      } else {
+        opacity = 1;
+        ty = 0;
+      }
+      return { opacity, ty };
+    }
+
+    window.seekWalkthrough = function (t) {
+      for (const s of scenes) {
+        const el = document.getElementById(s.id);
+        const { opacity, ty } = sceneMotion(t, s.start, s.end);
+        el.style.opacity = String(opacity);
+        el.style.transform = `translateY(${ty}px)`;
+      }
+
+      let beat = "WorldClock14";
+      let cap = "WorldClock14 — mock-up walkthrough";
+      for (const s of scenes) {
+        if (t >= s.start && t <= s.end) {
+          beat = s.beat;
+          cap = s.caption;
+        }
+      }
+      document.getElementById("beat-label").textContent = beat;
+      document.getElementById("caption").textContent = cap;
+    };
+
+    seekWalkthrough(0);
+  </script>
 </body>
 </html>

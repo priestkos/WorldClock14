@@ -13,27 +13,29 @@ const srcDir = path.join(__dirname, "src");
 const outDir = __dirname;
 
 const pages = [
-  { html: "01-main-live-now.html", png: "01-main-live-now.png", crop: "#shot" },
-  { html: "02-main-custom-time.html", png: "02-main-custom-time.png", crop: "#shot" },
-  { html: "03-main-warnings-errors.html", png: "03-main-warnings-errors.png", crop: "#shot" },
-  { html: "04-settings.html", png: "04-settings.png", crop: "#shot" },
-  { html: "05-commands-scene.html", png: "05-commands-scene.png", crop: "#shot" },
+  { html: "01-main-live-now.html", png: "01-main-live-now.png" },
+  { html: "02-main-custom-time.html", png: "02-main-custom-time.png" },
+  { html: "03-main-warnings-errors.html", png: "03-main-warnings-errors.png" },
+  { html: "04-settings.html", png: "04-settings.png" },
+  { html: "05-commands-scene.html", png: "05-commands-scene.png" },
 ];
 
 const browser = await chromium.launch({ headless: true });
-const context = await browser.newContext({ deviceScaleFactor: 1 });
+const page = await browser.newPage();
+await page.setViewportSize({ width: 1280, height: 720 });
 
 let total = 0;
-for (const page of pages) {
-  const p = await context.newPage();
-  const htmlPath = path.join(srcDir, page.html);
-  await p.goto("file://" + htmlPath, { waitUntil: "load" });
-  const el = p.locator(page.crop);
-  await el.screenshot({ path: path.join(outDir, page.png) });
-  await p.close();
-  const size = fs.statSync(path.join(outDir, page.png)).size;
+for (const entry of pages) {
+  const htmlPath = path.join(srcDir, entry.html);
+  await page.goto("file://" + htmlPath, { waitUntil: "load" });
+  await page.waitForTimeout(80);
+  await page.screenshot({
+    path: path.join(outDir, entry.png),
+    type: "png",
+  });
+  const size = fs.statSync(path.join(outDir, entry.png)).size;
   total += size;
-  console.log(`${page.png}\t${(size / 1024).toFixed(1)} KiB`);
+  console.log(`${entry.png}\t${(size / 1024).toFixed(1)} KiB`);
 }
 
 await browser.close();
