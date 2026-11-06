@@ -11,39 +11,19 @@
     <div class="mockup-banner">Mock-up</div>
     <div class="scene-label">Resilience — bad zone id becomes an error row; other zones still convert</div>
     <div class="win win-centered">
-      <div class="titlebar">
-        <div class="title">WorldClock14</div>
-        <div class="ghost">Settings</div>
+      <div class="titlebar"><span class="title">WorldClock14</span></div>
+      <div class="body">
+        <div class="row"><span class="radio on">Live now</span><span class="radio">Custom time</span><span class="btn push-right">Settings</span></div>
+        <div>Times are read in</div>
+        <div class="combo"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span></div>
+        <table class="data spaced">
+              <tr><td style="width:96px">IST</td><td>20:00</td><td style="width:62px"><span class="btn full">Copy</span></td></tr>
+          <tr><td>BadZone</td><td>unknown zone "Not/A/Real/Zone"</td><td></td></tr>
+          <tr><td style="width:96px">UTC</td><td>14:30</td><td style="width:62px"><span class="btn full">Copy</span></td></tr>
+        </table>
+        <span class="btn full spaced">Copy for chat</span>
+        <div class="disabled">Wed 07 Oct 2026 20:00</div>
       </div>
-
-      <div class="modes">
-        <div class="mode on">Live now</div>
-        <div class="mode">Custom time</div>
-      </div>
-
-      <div class="label">Times are read in</div>
-      <div class="select"><span>IST&nbsp;&nbsp;(Asia/Kolkata)</span><span>▾</span></div>
-
-      <table class="data">
-        <tr>
-          <td class="zone base">IST</td>
-          <td><span class="time">20:00</span></td>
-          <td style="width:62px"><span class="copy">Copy</span></td>
-        </tr>
-        <tr>
-          <td class="zone">BadZone</td>
-          <td><span class="errtext">unknown zone "Not/A/Real/Zone"</span></td>
-          <td style="width:62px"></td>
-        </tr>
-        <tr>
-          <td class="zone">UTC</td>
-          <td><span class="time">14:30</span></td>
-          <td style="width:62px"><span class="copy">Copy</span></td>
-        </tr>
-      </table>
-
-      <button type="button" class="primary">Copy for chat</button>
-      <div class="echo">Wed 07 Oct 2026 20:00</div>
     </div>
   </div>
 </body>

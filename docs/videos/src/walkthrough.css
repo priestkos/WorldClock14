@@ -30,6 +30,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 48px;
 }
 
 .scene::before {
@@ -43,31 +44,14 @@ body {
 }
 
 #scene-4 .win.settings {
-  transform: scale(0.58);
+  transform: scale(0.86);
   transform-origin: center center;
 }
 
 #scene-5 .scene-ui {
-  position: relative;
-  padding: 48px 56px;
-}
-
-.beat-label {
-  position: absolute;
-  top: 56px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9001;
-  padding: 8px 22px;
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #fff;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85);
-  background: rgba(8, 12, 20, 0.55);
-  border: 1px solid rgba(61, 194, 240, 0.35);
-  border-radius: 8px;
-  white-space: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 56px;
 }
 
 .video-caption {

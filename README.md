@@ -13,7 +13,7 @@ These images are **mock-ups** (HTML rendered to PNG at 1280×720). They are not 
 | | |
 |---|---|
 | ![Live now — current time in all zones](docs/screenshots/01-main-live-now.png) | ![Custom time — typed time with day rollover](docs/screenshots/02-main-custom-time.png) |
-| **Live now** — default mode, base zone picker, per-zone **Copy**, **Copy for chat**, and the copied flash line. | **Custom time** — input parsing, **+1d** day marker, DST ambiguity note, echo line. |
+| **Live now** — default mode, base zone picker, per-zone **Copy**, **Copy for chat**, and the copied flash line. | **Custom time** — input parsing, **+1d** day marker, copied line, echo line. |
 | ![Bad zone row in results](docs/screenshots/03-main-warnings-errors.png) | ![WorldClock14 settings](docs/screenshots/04-settings.png) |
 | **Resilience** — a bad zone id becomes an error row; other zones still convert. | **Settings** (`/tzconfig`) — zones, add/reorder/delete, base zone, copied-line format, preview. |
 | ![Slash commands and log output](docs/screenshots/05-commands-scene.png) | |
@@ -21,7 +21,7 @@ These images are **mock-ups** (HTML rendered to PNG at 1280×720). They are not 
 
 ### Mock-up video
 
-A short **mock-up** walkthrough (not real gameplay) cross-fades through the same scenes with on-screen beat labels and bottom captions. The gold **Mock-up** label stays visible for the whole clip.
+A short **mock-up** walkthrough (not real gameplay) cross-fades through the same scenes with a bottom caption naming each beat. The gold **Mock-up** label stays visible for the whole clip.
 
 ![Mock-up walkthrough preview](docs/videos/mockup-walkthrough.gif)
 

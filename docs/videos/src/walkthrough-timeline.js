@@ -86,7 +86,7 @@ runTimeline({
   },
   schedule: (at) => {
     at(0, () => {
-      setCaption("UI mock-up — not an in-game capture", "WorldClock14 / TimeShift");
+      setCaption("UI mock-up — not an in-game capture", "WorldClock14");
     });
 
     at(2800, () => {
@@ -147,7 +147,7 @@ runTimeline({
         await scenes.showScene("scene-4");
         const win = document.getElementById("settings-win");
         win.style.transform = "translateY(0)";
-        setCaption("TimeShift settings (/tzconfig)", "Zones, reorder, copied-line format, preview");
+        setCaption("WorldClock14 settings (/tzconfig)", "Zones, reorder, copied-line format, preview");
       })();
     });
 
