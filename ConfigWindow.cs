@@ -11,6 +11,9 @@ namespace WorldClock14;
 /// <summary>Zone list, base zone and the shape of the copied line. Saves on every discrete edit and on close.</summary>
 public sealed class ConfigWindow : Window, IDisposable
 {
+    // Built once: the picker drew a fresh 25-entry list every frame.
+    private static readonly List<ZonePreset> Presets = Defaults.Presets();
+
     private readonly Configuration config;
     private readonly Action<string>? requestCopy;
 
@@ -187,7 +190,7 @@ public sealed class ConfigWindow : Window, IDisposable
 
     private void DrawAddZone()
     {
-        var presets = Defaults.Presets();
+        var presets = Presets;
 
         ImGui.TextUnformatted("Add a zone");
 

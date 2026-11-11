@@ -51,9 +51,7 @@ public sealed class TimeZoneEntry
         if (IsLocal) return "system local";
         if (IsFixed)
         {
-            var minutes = ZoneResolver.ClampFixedOffset(FixedOffsetMinutes);
-            var sign = minutes < 0 ? "-" : "+";
-            return sign + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm") + " fixed";
+            return ZoneResolver.FormatOffset(ZoneResolver.ClampFixedOffset(FixedOffsetMinutes)) + " fixed";
         }
         return Id;
     }
@@ -85,13 +83,16 @@ public static class ZoneResolver
     public static int ClampFixedOffset(int minutes) =>
         Math.Clamp(minutes, MinFixedOffsetMinutes, MaxFixedOffsetMinutes);
 
+    /// <summary>"+05:30" / "-05:00" for an offset in minutes.</summary>
+    public static string FormatOffset(int minutes) =>
+        (minutes < 0 ? "-" : "+") + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm");
+
     public static TimeZoneInfo FixedOffset(int minutes)
     {
         minutes = ClampFixedOffset(minutes);
         if (FixedCache.TryGetValue(minutes, out var cached)) return cached;
 
-        var sign = minutes < 0 ? "-" : "+";
-        var id = "WorldClock14/Fixed" + sign + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm");
+        var id = "WorldClock14/Fixed" + FormatOffset(minutes);
         var zone = TimeZoneInfo.CreateCustomTimeZone(id, TimeSpan.FromMinutes(minutes), id, id);
         FixedCache[minutes] = zone;
         return zone;
@@ -152,8 +153,6 @@ public sealed class ParsedTime
 
     /// <summary>True when the user supplied a date, weekday or "tomorrow" - the UI can then echo it back.</summary>
     public bool HadDate { get; init; }
-
-    public string Echo { get; init; } = string.Empty;
 }
 
 /// <summary>
@@ -250,7 +249,6 @@ public static class TimeInput
         {
             WallClock = wallClock,
             HadDate = hadDate,
-            Echo = TimeFmt.Echo(wallClock, use24Hour: true),
         };
         return true;
     }
@@ -476,9 +474,6 @@ public sealed class ConversionRow
 
     /// <summary>This zone's time, formatted with the caller's options.</summary>
     public string Time(FormatOptions options) => TimeFmt.Time(Local, options.Use24Hour);
-
-    /// <summary>This zone's time, e.g. "20:00" or "8:00 PM".</summary>
-    public string Time(bool use24Hour) => TimeFmt.Time(Local, use24Hour);
 }
 
 public static class Converter
@@ -609,7 +604,4 @@ public static class ChatFormatter
         var body = options.MultiLine ? string.Join("\n", parts) : string.Join(separator, parts);
         return (options.Prefix ?? string.Empty) + body + (options.Suffix ?? string.Empty);
     }
-
-    /// <summary>Row text for a zone, used by the per-zone copy buttons.</summary>
-    public static string SingleRow(ConversionRow row, FormatOptions options) => RowText(row, options);
 }

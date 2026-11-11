@@ -41,6 +41,8 @@ internal static class Program
         Conversion();
         Section("chat line formatting");
         Formatting();
+        Section("offset formatting, old vs new");
+        OffsetFormatOldVsNew();
         Section("round trip, 3 years of wall clocks x 17 zones");
         RoundTrip();
 
@@ -121,7 +123,6 @@ internal static class Program
         Check("year 0002 still parses", Wall("0002-01-02 20:00", today), "0002-01-02 20:00");
         Check("01-05 after October rolls to next year", Wall("01-05 20:00", today), "2027-01-05 20:00");
 
-        Assert("parsed Echo is populated", TimeInput.TryParse("20:00", today, out var p, out _) && p.Echo.Length > 0);
         Check("echo respects 12-hour", TimeFmt.Echo(new DateTime(2026, 10, 7, 20, 0, 0), use24Hour: false), "Wed 07 Oct 2026 8:00 PM");
         Assert("HadDate is false for a bare time", TimeInput.TryParse("20:00", today, out var p2, out _) && !p2.HadDate);
         Assert("HadDate is true for tomorrow", TimeInput.TryParse("tomorrow 20:00", today, out var p3, out _) && p3.HadDate);
@@ -311,6 +312,33 @@ internal static class Program
         };
         Check("error rows are left out of the copied line", ChatFormatter.Build(broken, new FormatOptions()), "16:30 IST");
         Check("all-broken line is empty", ChatFormatter.Build(broken.Skip(1).ToList(), new FormatOptions()), "");
+    }
+
+    /// <summary>The three hand-rolled copies FormatOffset replaced, kept verbatim to prove the merge changed nothing.</summary>
+    private static string OldOffset(int minutes) =>
+        (minutes < 0 ? "-" : "+") + TimeSpan.FromMinutes(Math.Abs(minutes)).ToString(@"hh\:mm");
+
+    private static void OffsetFormatOldVsNew()
+    {
+        var compared = 0;
+        var mismatches = 0;
+        for (var m = -100_000; m <= 100_000; m++)
+        {
+            compared++;
+            if (new ZonePreset("X", string.Empty, true, m).Describe() != OldOffset(m) + " fixed") mismatches++;
+            compared++;
+            if (TimeZoneEntry.Fixed("X", m).Describe() != OldOffset(ZoneResolver.ClampFixedOffset(m)) + " fixed") mismatches++;
+        }
+
+        for (var m = ZoneResolver.MinFixedOffsetMinutes - 60; m <= ZoneResolver.MaxFixedOffsetMinutes + 60; m++)
+        {
+            compared++;
+            if (ZoneResolver.FixedOffset(m).Id != "WorldClock14/Fixed" + OldOffset(ZoneResolver.ClampFixedOffset(m))) mismatches++;
+        }
+
+        checks += compared;
+        failures += mismatches;
+        Console.WriteLine($"  {compared.ToString("N0", CultureInfo.InvariantCulture)} old-vs-new offset strings compared, {mismatches} mismatches");
     }
 
     private static void RoundTrip()

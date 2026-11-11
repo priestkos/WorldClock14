@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace WorldClock14;
@@ -60,10 +59,5 @@ public static class Defaults
 public sealed record ZonePreset(string Label, string Id, bool IsFixed = false, int FixedMinutes = 0)
 {
     /// <summary>How the preset resolves, for the picker: an IANA id, or "+00:00 fixed".</summary>
-    public string Describe()
-    {
-        if (!IsFixed) return Id;
-        var sign = FixedMinutes < 0 ? "-" : "+";
-        return sign + TimeSpan.FromMinutes(Math.Abs(FixedMinutes)).ToString(@"hh\:mm") + " fixed";
-    }
+    public string Describe() => IsFixed ? ZoneResolver.FormatOffset(FixedMinutes) + " fixed" : Id;
 }
