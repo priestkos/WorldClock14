@@ -162,11 +162,12 @@ public sealed class ParsedTime
 /// </summary>
 public static class TimeInput
 {
-    private static readonly Regex RxIsoDate = new(@"^(\d{4})-(\d{1,2})-(\d{1,2})$", RegexOptions.Compiled);
-    private static readonly Regex RxShortDate = new(@"^(\d{1,2})-(\d{1,2})$", RegexOptions.Compiled);
-    private static readonly Regex RxTimeColon = new(@"^(\d{1,2}):(\d{2})(?::(\d{2}))?(am|pm)?$", RegexOptions.Compiled);
-    private static readonly Regex RxHourMeridiem = new(@"^(\d{1,2})(am|pm)$", RegexOptions.Compiled);
-    private static readonly Regex RxDigits = new(@"^\d{1,4}$", RegexOptions.Compiled);
+    // [0-9], not \d: \d also matches fullwidth/Arabic-Indic digits, which int.Parse then throws on.
+    private static readonly Regex RxIsoDate = new(@"^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$", RegexOptions.Compiled);
+    private static readonly Regex RxShortDate = new(@"^([0-9]{1,2})-([0-9]{1,2})$", RegexOptions.Compiled);
+    private static readonly Regex RxTimeColon = new(@"^([0-9]{1,2}):([0-9]{2})(?::([0-9]{2}))?(am|pm)?$", RegexOptions.Compiled);
+    private static readonly Regex RxHourMeridiem = new(@"^([0-9]{1,2})(am|pm)$", RegexOptions.Compiled);
+    private static readonly Regex RxDigits = new(@"^[0-9]{1,4}$", RegexOptions.Compiled);
 
     private static readonly Dictionary<string, DayOfWeek> Weekdays = new(StringComparer.Ordinal)
     {
@@ -388,7 +389,8 @@ public static class TimeInput
             {
                 try
                 {
-                    date = date.AddYears(1);
+                    // Not AddYears: that turns 29 Feb into 28 Feb instead of refusing it.
+                    date = new DateTime(today.Year + 1, month, day);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -496,7 +498,8 @@ public static class Converter
 
         if (baseZone.IsInvalidTime(naive))
         {
-            error = $"{naive:HH:mm} on {naive:dd MMM} doesn't exist in {baseZone.Id} - the clocks jump forward that day.";
+            error = string.Create(CultureInfo.InvariantCulture,
+                $"{naive:HH:mm} on {naive:dd MMM} doesn't exist in {baseZone.Id} - the clocks jump forward that day.");
             return false;
         }
 

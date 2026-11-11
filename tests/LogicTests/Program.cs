@@ -145,6 +145,17 @@ internal static class Program
         CheckReject("am on a 24h hour", "20am");
         CheckReject("year 9999 (DateTime edge clamps)", "9999-12-31 23:00");
         CheckReject("year 0001 (DateTime edge clamps)", "0001-01-01 01:00");
+        // \d matches every Unicode digit, but int.Parse only reads ASCII ones: these used to throw.
+        CheckReject("fullwidth digits (JP IME)", "\uFF12\uFF10:\uFF10\uFF10");
+        CheckReject("fullwidth military", "\uFF12\uFF10\uFF10\uFF10");
+        CheckReject("fullwidth hour with pm", "\uFF18pm");
+        CheckReject("Arabic-Indic digits", "\u0662\u0660:\u0660\u0660");
+        CheckReject("fullwidth ISO year", "\uFF12\uFF10\uFF12\uFF16-10-07 20:00");
+        CheckReject("fullwidth month-day", "\uFF11\uFF10-07 20:00");
+        Check("29 Feb after it passed is refused, not moved to 28 Feb",
+            Wall("02-29 20:00", new DateTime(2028, 3, 1)).StartsWith("parse error", StringComparison.Ordinal), true);
+        Check("29 Feb still ahead this leap year", Wall("02-29 20:00", new DateTime(2028, 2, 1)), "2028-02-29 20:00");
+        Check("passed month-day rolls a full year", Wall("03-01 20:00", new DateTime(2028, 3, 2)), "2029-03-01 20:00");
     }
 
     private static void InstantResolution()
@@ -176,6 +187,12 @@ internal static class Program
         var gap = Converter.TryResolveInstant(new DateTime(2026, 3, 8, 2, 30, 0), et, out _, out _, out var gapError);
         Assert("DST gap is refused, not guessed", !gap);
         Assert($"DST gap says why (\"{gapError}\")", gapError.Contains("doesn't exist", StringComparison.Ordinal));
+        var savedCulture = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("fi-FI");
+        Converter.TryResolveInstant(new DateTime(2026, 3, 8, 2, 30, 0), et, out _, out _, out var fiError);
+        CultureInfo.CurrentCulture = savedCulture;
+        Check("DST gap message ignores the host culture", fiError, gapError);
+        Assert("DST gap message names 02:30 on 08 Mar", gapError.StartsWith("02:30 on 08 Mar", StringComparison.Ordinal));
 
         // 02:00:00 is also inside the gap; 01:59 and 03:00 are fine.
         Assert("01:59 ET resolves", Converter.TryResolveInstant(new DateTime(2026, 3, 8, 1, 59, 0), et, out _, out _, out _));
@@ -374,8 +391,20 @@ internal static class Program
 
     private static void CheckReject(string what, string input)
     {
-        var ok = !TimeInput.TryParse(input, new DateTime(2026, 10, 7), out _, out var error);
         checks++;
+        bool ok;
+        string error;
+        try
+        {
+            ok = !TimeInput.TryParse(input, new DateTime(2026, 10, 7), out _, out error);
+        }
+        catch (Exception ex)
+        {
+            failures++;
+            Console.WriteLine($"  FAIL reject {what}: threw {ex.GetType().Name}");
+            return;
+        }
+
         if (ok)
         {
             Console.WriteLine($"  ok   reject {what} (\"{error}\")");
