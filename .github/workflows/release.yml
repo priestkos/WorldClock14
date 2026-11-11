@@ -34,6 +34,9 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Run the offline checks
+        run: dotnet run --project tests/LogicTests/LogicTests.csproj -c Release
+
       - name: Install the Dalamud development distribution
         shell: pwsh
         run: |
