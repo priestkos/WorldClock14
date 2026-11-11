@@ -120,7 +120,7 @@ zone in the list.
 
 ```
 cd tests/LogicTests && dotnet run -c Release
-# 148,970 checks, 0 failures
+# 550,810 checks, 0 failures
 ```
 
 That includes a round-trip over 148,860 wall clocks (2024–2027, 17 zones): naive time →

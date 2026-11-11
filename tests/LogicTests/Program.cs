@@ -41,6 +41,8 @@ internal static class Program
         Conversion();
         Section("chat line formatting");
         Formatting();
+        Section("build rows end to end");
+        BuildRowsEndToEnd();
         Section("offset formatting, old vs new");
         OffsetFormatOldVsNew();
         Section("round trip, 3 years of wall clocks x 17 zones");
@@ -312,6 +314,44 @@ internal static class Program
         };
         Check("error rows are left out of the copied line", ChatFormatter.Build(broken, new FormatOptions()), "16:30 IST");
         Check("all-broken line is empty", ChatFormatter.Build(broken.Skip(1).ToList(), new FormatOptions()), "");
+    }
+
+    private static void BuildRowsEndToEnd()
+    {
+        var jstBase = TimeZoneEntry.Iana("JST", "Asia/Tokyo");
+        var zones = Defaults.CreateZones();
+        var opts = new FormatOptions();
+
+        // 20:00 UTC on the 7th is already 05:00 on the 8th in Tokyo, so "20:00" and "tomorrow" count from the 8th.
+        var lateUtc = new DateTimeOffset(2026, 10, 7, 20, 0, 0, TimeSpan.Zero);
+        Assert("today is taken in the base zone, not UTC",
+            Converter.TryBuildRows("20:00", lateUtc, jstBase, zones, out var rows, out _, out _, out _) &&
+            TimeFmt.Sortable(rows[1].Local) == "2026-10-08 20:00");
+        Assert("tomorrow is relative to the base zone's date",
+            Converter.TryBuildRows("tomorrow 20:00", lateUtc, jstBase, zones, out var tRows, out _, out _, out _) &&
+            TimeFmt.Sortable(tRows[1].Local) == "2026-10-09 20:00");
+
+        var etBase = TimeZoneEntry.Iana("ET", "America/New_York");
+        var autumn = new DateTimeOffset(2026, 10, 20, 12, 0, 0, TimeSpan.Zero);
+        Assert("fall-back hour comes back ambiguous through TryBuildRows",
+            Converter.TryBuildRows("2026-11-01 01:30", autumn, etBase, zones, out _, out _, out var amb, out _) && amb);
+        Assert("spring-forward gap comes back as an error through TryBuildRows",
+            !Converter.TryBuildRows("2026-03-08 02:30", autumn, etBase, zones, out var gapRows, out _, out _, out var gapErr) &&
+            gapRows.Count == 0 && gapErr.Contains("doesn't exist", StringComparison.Ordinal));
+
+        // The row offset is the one in force at the instant shown, not today's.
+        var london = new List<TimeZoneEntry> { TimeZoneEntry.Iana("UK", "Europe/London") };
+        var utc = ZoneResolver.FixedOffset(0);
+        Check("London in January is UTC+0",
+            Converter.Convert(new DateTimeOffset(2026, 1, 15, 11, 0, 0, TimeSpan.Zero), utc, london)[0].Time(opts), "11:00");
+        Check("London in July is UTC+1",
+            Converter.Convert(new DateTimeOffset(2026, 7, 15, 11, 0, 0, TimeSpan.Zero), utc, london)[0].Time(opts), "12:00");
+
+        var unlabelled = Converter.Convert(lateUtc, utc, new List<TimeZoneEntry> { TimeZoneEntry.Fixed("", 330) });
+        Check("an empty label falls back to the offset", unlabelled[0].Label, "+05:30 fixed");
+        Check("empty separator falls back to \" | \", null prefix is tolerated",
+            ChatFormatter.Build(rows.Take(2).ToList(), new FormatOptions { Separator = "", Prefix = null! }), "16:30 IST | 20:00 JST");
+        Check("8 a.m. folds onto the hour", Wall("8 a.m.", new DateTime(2026, 10, 7)), "2026-10-07 08:00");
     }
 
     /// <summary>The three hand-rolled copies FormatOffset replaced, kept verbatim to prove the merge changed nothing.</summary>
