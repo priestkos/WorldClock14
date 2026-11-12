@@ -20,7 +20,10 @@ public static class Defaults
         TimeZoneEntry.Iana("ET", "America/New_York"),
     };
 
-    /// <summary>Curated spread of the zones an FFXIV player actually coordinates across.</summary>
+    /// <summary>
+    /// Curated spread of the zones an FFXIV player actually coordinates across. Zones that change their clocks
+    /// get season-neutral labels (ET, UK, AET), since a pasted "BST" is wrong half the year.
+    /// </summary>
     public static List<ZonePreset> Presets() => new()
     {
         new ZonePreset("IST", "Asia/Kolkata"),
@@ -33,19 +36,19 @@ public static class Defaults
         new ZonePreset("HKT", "Asia/Hong_Kong"),
         new ZonePreset("SGT", "Asia/Singapore"),
         new ZonePreset("ICT", "Asia/Bangkok"),
-        new ZonePreset("AEST", "Australia/Sydney"),
-        new ZonePreset("ACST", "Australia/Adelaide"),
+        new ZonePreset("AET", "Australia/Sydney"),
+        new ZonePreset("ACT", "Australia/Adelaide"),
         new ZonePreset("AWST", "Australia/Perth"),
-        new ZonePreset("NZST", "Pacific/Auckland"),
+        new ZonePreset("NZT", "Pacific/Auckland"),
         new ZonePreset("UTC", string.Empty, true, 0),
-        new ZonePreset("BST", "Europe/London"),
-        new ZonePreset("CET", "Europe/Berlin"),
-        new ZonePreset("EET", "Europe/Athens"),
+        new ZonePreset("UK", "Europe/London"),
+        new ZonePreset("CE", "Europe/Berlin"),
+        new ZonePreset("EE", "Europe/Athens"),
         new ZonePreset("ET", "America/New_York"),
         new ZonePreset("CT", "America/Chicago"),
         new ZonePreset("MT", "America/Denver"),
         new ZonePreset("PT", "America/Los_Angeles"),
-        new ZonePreset("AKST", "America/Anchorage"),
+        new ZonePreset("AKT", "America/Anchorage"),
         new ZonePreset("HST", "Pacific/Honolulu"),
         new ZonePreset("BRT", "America/Sao_Paulo"),
     };

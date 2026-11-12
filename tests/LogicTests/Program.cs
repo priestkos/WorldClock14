@@ -55,6 +55,12 @@ internal static class Program
 
     // ------------------------------------------------------------------ sections
 
+    private static readonly HashSet<string> SeasonalLabels = new()
+    {
+        "GMT", "BST", "CET", "CEST", "EET", "EEST", "EST", "EDT", "CST", "CDT", "MST", "MDT", "PST", "PDT",
+        "AKST", "AKDT", "AEST", "AEDT", "ACST", "ACDT", "NZST", "NZDT",
+    };
+
     private static void ZoneResolution()
     {
         foreach (var preset in Defaults.Presets())
@@ -67,6 +73,10 @@ internal static class Program
             }
 
             Assert($"preset {preset.Label} resolves ({preset.Id})", ZoneResolver.ResolveId(preset.Id) is not null);
+
+            // A zone that changes its clocks must not carry one season's abbreviation (BST is wrong all winter).
+            if (ZoneResolver.ResolveId(preset.Id)?.SupportsDaylightSavingTime == true)
+                Assert($"DST preset {preset.Label} has a season-neutral label", !SeasonalLabels.Contains(preset.Label));
         }
 
         Check("IANA id resolves", ZoneResolver.ResolveId("Asia/Tokyo")?.Id, "Asia/Tokyo");
